@@ -1,0 +1,13 @@
+# API server. The Ming model stack (torch, transformers, ...) is installed by
+# the Dockerfile from Ming's own requirements; nothing here imports torch.
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.1
+python-multipart==0.0.32
+# Same pin as Ming's requirements.txt, so this file never moves it.
+soundfile==0.12.1
+# Deliberately unpinned: the Docker image takes whatever numpy the Ming stack
+# (torch 2.6 / transformers 4.46.3 / onnxruntime) resolved; pinning here would
+# override it. The dev venv on a Mac gets the latest.
+numpy>=1.26
+httpx==0.28.1

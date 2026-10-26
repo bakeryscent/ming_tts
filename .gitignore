@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# HuggingFace / model caches
+.hf/
+.cache/
+*.safetensors
+
+# Generated audio (smoke.sh output, etc.); the bundled presets are tracked.
+*.wav
+!voices/*.wav
+# Clones created against a local VOICES_DIR=voices
+voices/clone_*
+
+# Env / secrets
+.env
+.env.*
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+*.swp

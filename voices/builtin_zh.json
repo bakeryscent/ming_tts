@@ -1,0 +1,2347 @@
+{
+ "妩媚妲己": {
+  "description": "Sweet and crisp, with light, rising intonation and an alluring delivery.",
+  "gender": "female"
+ },
+ "小猪佩奇_佩奇": {
+  "description": null,
+  "gender": null
+ },
+ "康熙王朝_康熙": {
+  "description": null,
+  "gender": null
+ },
+ "悟空": {
+  "description": "Highly expressive and theatrical, with vivid but measured exaggeration.",
+  "gender": "male"
+ },
+ "悲伤女声": {
+  "description": "Gentle yet determined, with a thoughtful, intimate storytelling style.",
+  "gender": "female"
+ },
+ "水浒传_武松": {
+  "description": null,
+  "gender": null
+ },
+ "水浒传_潘金莲": {
+  "description": null,
+  "gender": null
+ },
+ "潜伏_余则成": {
+  "description": null,
+  "gender": null
+ },
+ "灵书悦_中性": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵书悦_厌恶": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵书悦_恐惧": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵书悦_悲伤": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵书悦_惊讶": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵书悦_生气": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵书悦_高兴": {
+  "description": "Crisp and pleasant, balancing objective narration with lively, humorous commentary.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵书意_中性": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵书意_厌恶": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵书意_恐惧": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵书意_悲伤": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵书意_惊讶": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵书意_生气": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵书意_高兴": {
+  "description": "Warm and resonant, with steady, engaging delivery and a comforting late-night-radio feel.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵亦尘_中性": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵亦尘_厌恶": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵亦尘_恐惧": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵亦尘_悲伤": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵亦尘_惊讶": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵亦尘_生气": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵亦尘_高兴": {
+  "description": "Warm and resonant, with natural, gentle concern and reassuring delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵佑安_中性": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵佑安_厌恶": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵佑安_恐惧": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵佑安_悲伤": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵佑安_惊讶": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵佑安_生气": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵佑安_高兴": {
+  "description": "Mellow and resonant, with calm, persuasive and professional delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵信远_中性": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵信远_厌恶": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵信远_恐惧": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵信远_悲伤": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵信远_惊讶": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵信远_生气": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵信远_高兴": {
+  "description": "Clear and warm, with a slight smile and audible breath, balancing youthful freshness and mature affection.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵傲尘_中性": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵傲尘_厌恶": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵傲尘_恐惧": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵傲尘_悲伤": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵傲尘_生气": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵傲尘_高兴": {
+  "description": "Warm, mellow and resonant, with steady, objective and mature reflection.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵决冥_中性": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵决冥_厌恶": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵决冥_恐惧": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵决冥_悲伤": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵决冥_惊讶": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵决冥_生气": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵决冥_高兴": {
+  "description": "Resonant and precise, with calm, objective and engaging documentary-style delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵卓然_中性": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵卓然_厌恶": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵卓然_恐惧": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵卓然_悲伤": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵卓然_惊讶": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵卓然_生气": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵卓然_高兴": {
+  "description": "Full and resonant, with precise pronunciation and calm, objective delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵叙柔_中性": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵叙柔_厌恶": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵叙柔_恐惧": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵叙柔_悲伤": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵叙柔_惊讶": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵叙柔_生气": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵叙柔_高兴": {
+  "description": "Composed and dignified, with clear articulation and a balance of authority and gentle narration.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵嘉肴_中性": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵嘉肴_厌恶": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵嘉肴_恐惧": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵嘉肴_悲伤": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵嘉肴_惊讶": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵嘉肴_生气": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵嘉肴_高兴": {
+  "description": "Bright and energetic, with precise articulation and rational, approachable confidence.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵妙声_中性": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵妙声_恐惧": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵妙声_悲伤": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵妙声_惊讶": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵妙声_生气": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵妙声_高兴": {
+  "description": "Sweet and crisp, with standard pronunciation and a fresh, approachable, professional delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵妙音_中性": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵妙音_厌恶": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵妙音_恐惧": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵妙音_悲伤": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵妙音_惊讶": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵妙音_生气": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵妙音_高兴": {
+  "description": "Resonant and forceful, with efficient delivery and an unquestionable sense of authority.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵妩月_中性": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵妩月_厌恶": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵妩月_恐惧": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵妩月_悲伤": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵妩月_惊讶": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵妩月_生气": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵妩月_高兴": {
+  "description": "Gentle and thoughtful, combining caring, rational advice with quiet strength.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵娇": {
+  "description": "Sweet, bright and lively, with vivid, youthful storytelling.",
+  "gender": "female"
+ },
+ "灵婉": {
+  "description": "Clear and sweet, with a youthful, intimate and soothing delivery.",
+  "gender": "female"
+ },
+ "灵孤影_中性": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵孤影_厌恶": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵孤影_恐惧": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵孤影_悲伤": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵孤影_惊讶": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵孤影_生气": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵孤影_高兴": {
+  "description": "Warm and resonant, with composed, sincere appreciation and natural satisfaction.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵宇": {
+  "description": "Youthful and resonant, with a confident smile and gentle teasing.",
+  "gender": "male"
+ },
+ "灵宛溪_中性": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵宛溪_厌恶": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵宛溪_恐惧": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵宛溪_悲伤": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵宛溪_惊讶": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵宛溪_生气": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵宛溪_高兴": {
+  "description": "Gentle and dignified, with relaxed, heartfelt and soothing resonance.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵寒陌_中性": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵寒陌_厌恶": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵寒陌_恐惧": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵寒陌_悲伤": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵寒陌_惊讶": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵寒陌_生气": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵寒陌_高兴": {
+  "description": "Clear and youthful, with urgent, innocent attempts to clear up a misunderstanding.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵小安": {
+  "description": "Sweet, crisp and energetic, with an approachable, cute anime-style delivery.",
+  "gender": "female"
+ },
+ "灵小川": {
+  "description": "Warm, mellow and resonant, with sensitive, expressive delivery.",
+  "gender": "male"
+ },
+ "灵小惠": {
+  "description": "Very fast and penetrating, conveying urgency, enthusiasm and professional confidence.",
+  "gender": "female"
+ },
+ "灵小晴": {
+  "description": "Very fast yet clear, with a powerful, bright delivery that conveys urgency.",
+  "gender": "female"
+ },
+ "灵小月": {
+  "description": "Sweet, clear and energetic, with cheerful, welcoming intonation.",
+  "gender": "female"
+ },
+ "灵小柔": {
+  "description": "Clear, sweet and articulate, with polite, patient and professional intonation.",
+  "gender": "female"
+ },
+ "灵小梨": {
+  "description": "Sweet and clear, combining youthful playfulness with gentle, expressive narration.",
+  "gender": "female"
+ },
+ "灵小棠": {
+  "description": "Clear and warm, with calm pacing and a gentle, experienced storytelling style.",
+  "gender": "female"
+ },
+ "灵小汐": {
+  "description": "Clear and sweet, with relaxed, natural and endearingly innocent delivery.",
+  "gender": "female"
+ },
+ "灵小琪": {
+  "description": "Sunny, friendly and natural, with an enthusiastic recommendation style.",
+  "gender": "male"
+ },
+ "灵小甄": {
+  "description": "Bright, crisp and lively, with a friendly, persuasive recommendation style.",
+  "gender": "female"
+ },
+ "灵小知": {
+  "description": "Bright and confident, with strong, articulate and persuasive delivery.",
+  "gender": "female"
+ },
+ "灵小芸": {
+  "description": "Warm and thoughtful, with sincere, calm and sensitive delivery.",
+  "gender": "female"
+ },
+ "灵小萌": {
+  "description": "Bright, crisp and brisk, with an energetic yet dependable delivery.",
+  "gender": "female"
+ },
+ "灵小锋": {
+  "description": "Warm and resonant, with natural confidence and a balance of friendliness and maturity.",
+  "gender": "male"
+ },
+ "灵小雅": {
+  "description": "Sweet, bright and youthful, with an energetic delivery.",
+  "gender": "female"
+ },
+ "灵岩": {
+  "description": "Clear, formal and professional.",
+  "gender": "male"
+ },
+ "灵幽月_中性": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵幽月_厌恶": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵幽月_恐惧": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵幽月_悲伤": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵幽月_惊讶": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵幽月_生气": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵幽月_高兴": {
+  "description": "Clear and thoughtfully warm, with precise articulation and an appreciative, open-minded delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵律雅_中性": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵律雅_厌恶": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵律雅_恐惧": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵律雅_悲伤": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵律雅_惊讶": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵律雅_生气": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵律雅_高兴": {
+  "description": "Efficient and grounded in urban life, with restrained, authentic frustration.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵御心_中性": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵御心_厌恶": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵御心_恐惧": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵御心_悲伤": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵御心_惊讶": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵御心_生气": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵御心_高兴": {
+  "description": "Bright, crisp and direct, with efficient, youthful energy.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵心恬_中性": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵心恬_厌恶": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵心恬_恐惧": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵心恬_悲伤": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵心恬_惊讶": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵心恬_生气": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵心恬_高兴": {
+  "description": "Crisp and composed, with objective delivery and vivid storytelling.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵心澜_中性": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵心澜_厌恶": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵心澜_恐惧": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵心澜_悲伤": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵心澜_惊讶": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵心澜_生气": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵心澜_高兴": {
+  "description": "Mature and composed, with assured, discerning and dignified delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵思齐_中性": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵思齐_厌恶": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵思齐_恐惧": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵思齐_悲伤": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵思齐_惊讶": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵思齐_生气": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵思齐_高兴": {
+  "description": "Sunny, bright and engaging, with sincere praise and approachable warmth.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵恬": {
+  "description": "Honey-sweet, with a gently playful yet assured romantic delivery.",
+  "gender": "female"
+ },
+ "灵悦兮_中性": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵悦兮_厌恶": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵悦兮_恐惧": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵悦兮_悲伤": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵悦兮_惊讶": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵悦兮_生气": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵悦兮_高兴": {
+  "description": "Bright and crisp, with lively, confident and action-oriented delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵悦心_中性": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵悦心_厌恶": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵悦心_恐惧": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵悦心_悲伤": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵悦心_惊讶": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵悦心_生气": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵悦心_高兴": {
+  "description": "Warm and thoughtful, with rounded articulation and gentle, uplifting delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵悦澜_中性": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵悦澜_厌恶": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵悦澜_恐惧": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵悦澜_悲伤": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵悦澜_惊讶": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵悦澜_生气": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵悦澜_高兴": {
+  "description": "Sweet and crisp, with a smiling, approachable and lively delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵惊弦_中性": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵惊弦_厌恶": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵惊弦_恐惧": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵惊弦_悲伤": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵惊弦_惊讶": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵惊弦_生气": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵惊弦_高兴": {
+  "description": "Bright and textured, with precise pronunciation and thoughtful, authoritative yet objective delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵惊涛_中性": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵惊涛_厌恶": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵惊涛_恐惧": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵惊涛_悲伤": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵惊涛_惊讶": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵惊涛_生气": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵惊涛_高兴": {
+  "description": "Young male delivery with a distinctive Nanning accent, conveying humorous frustration at an overly cold internet cafe.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵惊鸿_中性": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵惊鸿_厌恶": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵惊鸿_恐惧": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵惊鸿_悲伤": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵惊鸿_惊讶": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵惊鸿_生气": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵惊鸿_高兴": {
+  "description": "Brisk and direct, with natural, easygoing business confidence.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵惜晨_中性": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵惜晨_厌恶": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵惜晨_恐惧": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵惜晨_悲伤": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵惜晨_惊讶": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵惜晨_生气": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵惜晨_高兴": {
+  "description": "Sweet and crisp, with lively, thoughtful and enthusiastic delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵惜梦_中性": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵惜梦_厌恶": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵惜梦_恐惧": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵惜梦_悲伤": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵惜梦_惊讶": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵惜梦_生气": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵惜梦_高兴": {
+  "description": "Bright and crisp, combining approachable warmth with independence and decisiveness.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵惜蕊_中性": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵惜蕊_厌恶": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵惜蕊_恐惧": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵惜蕊_悲伤": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵惜蕊_惊讶": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵惜蕊_生气": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵惜蕊_高兴": {
+  "description": "Clear and pleasant, with standard pronunciation and patient, professional warmth.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵慈萱_中性": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵慈萱_厌恶": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵慈萱_恐惧": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵慈萱_悲伤": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵慈萱_惊讶": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵慈萱_生气": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵慈萱_高兴": {
+  "description": "Crisp, youthful and natural, with a familiar, slightly urgent delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵断尘_中性": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵断尘_厌恶": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵断尘_恐惧": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵断尘_悲伤": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵断尘_惊讶": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵断尘_生气": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵断尘_高兴": {
+  "description": "Youthful and conversational, with light questions and decisive refusals.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵旭": {
+  "description": "Clear, youthful and scholarly, with calm, gentle storytelling.",
+  "gender": "male"
+ },
+ "灵旭扬_中性": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵旭扬_厌恶": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵旭扬_恐惧": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵旭扬_悲伤": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵旭扬_惊讶": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵旭扬_生气": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵旭扬_高兴": {
+  "description": "Warm and resonant, with affectionate delivery and a hint of illness-related weakness and desire for attention.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵昭野_中性": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵昭野_厌恶": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵昭野_恐惧": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵昭野_悲伤": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵昭野_惊讶": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵昭野_生气": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵昭野_高兴": {
+  "description": "Clear and youthful, with sincere admiration and a warm, captivated delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵晓声_中性": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵晓声_厌恶": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵晓声_悲伤": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵晓声_惊讶": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵晓声_生气": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵晓声_高兴": {
+  "description": "Youthful and resonant, with calm confidence and an assertive, charismatic delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵朗": {
+  "description": "Low and resonant, combining confident warmth with affectionate reassurance.",
+  "gender": "male"
+ },
+ "灵未央_中性": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵未央_厌恶": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵未央_恐惧": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵未央_悲伤": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵未央_惊讶": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵未央_生气": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵未央_高兴": {
+  "description": "Sweet and crisp, with playful, rising intonation and confident explanations.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵朵儿": {
+  "description": "Warm, thoughtful and approachable, with an unhurried, soothing storytelling style.",
+  "gender": "female"
+ },
+ "灵梦": {
+  "description": "Very sweet and youthful, with playful, affectionate delivery.",
+  "gender": "female"
+ },
+ "灵梦瑶_中性": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵梦瑶_恐惧": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵梦瑶_悲伤": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵梦瑶_惊讶": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵梦瑶_生气": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵梦瑶_高兴": {
+  "description": "Soft and sweet, with a friendly, earnest and soothing explanatory style.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵楷": {
+  "description": "Warm and resonant, with slow, soothing late-night-radio narration.",
+  "gender": "male"
+ },
+ "灵汐月_中性": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵汐月_厌恶": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵汐月_恐惧": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵汐月_悲伤": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵汐月_惊讶": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵汐月_生气": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵汐月_高兴": {
+  "description": "Sweet and soothing, with relaxed, heartfelt delivery conveying intimacy and trust.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵江": {
+  "description": "Warm and resonant, with relaxed, heartfelt reflections on youth and enthusiasm.",
+  "gender": "male"
+ },
+ "灵浅忧_中性": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "neutral",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_厌恶": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "disgusted",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_恐惧": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "fearful",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_悲伤": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "sad",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_惊讶": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "surprised",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_生气": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "angry",
+  "gender": "male (boy)"
+ },
+ "灵浅忧_高兴": {
+  "description": "Bright and crisp, with precise articulation and professional, objective confidence.",
+  "emotion": "happy",
+  "gender": "male (boy)"
+ },
+ "灵渊霆_中性": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵渊霆_厌恶": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵渊霆_恐惧": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵渊霆_悲伤": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵渊霆_惊讶": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵渊霆_生气": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵渊霆_高兴": {
+  "description": "Youthful, natural and relaxed, like a familiar friend making a casual invitation.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵温言_中性": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵温言_厌恶": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵温言_恐惧": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵温言_悲伤": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵温言_惊讶": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵温言_生气": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵温言_高兴": {
+  "description": "Youthful and resonant, with rational, gentle and persuasive narration.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵溯光_中性": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵溯光_厌恶": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵溯光_恐惧": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵溯光_悲伤": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵溯光_惊讶": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵溯光_生气": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵溯光_高兴": {
+  "description": "Approachable and youthful, with warm interest and an affirmative recommendation style.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵烈瑶_中性": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵烈瑶_厌恶": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵烈瑶_恐惧": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵烈瑶_悲伤": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵烈瑶_惊讶": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵烈瑶_生气": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵烈瑶_高兴": {
+  "description": "Bright and efficient, with clear articulation and objective, logical delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵熙婉_中性": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵熙婉_厌恶": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵熙婉_恐惧": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵熙婉_悲伤": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵熙婉_惊讶": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵熙婉_生气": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵熙婉_高兴": {
+  "description": "Sweet and clear, with a smiling, approachable and lively storytelling style.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵犀言_中性": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵犀言_厌恶": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵犀言_恐惧": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵犀言_悲伤": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵犀言_惊讶": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵犀言_生气": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵犀言_高兴": {
+  "description": "Deep and full, with mature composure, firm articulation and an authoritative delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵知远_中性": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵知远_厌恶": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵知远_恐惧": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵知远_悲伤": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵知远_惊讶": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵知远_生气": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵知远_高兴": {
+  "description": "Clear and warm, balancing composure and youthful energy with an optimistic delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵空": {
+  "description": "Low and resonant, with close, breathy delivery that conveys affection and reassurance.",
+  "gender": "male"
+ },
+ "灵素心_中性": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵素心_厌恶": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵素心_恐惧": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵素心_悲伤": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵素心_惊讶": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵素心_生气": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵素心_高兴": {
+  "description": "Sweet, crisp and energetic, with lively, curious intonation.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵绮木_中性": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵绮木_厌恶": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵绮木_恐惧": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵绮木_悲伤": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵绮木_惊讶": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵绮木_生气": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵绮木_高兴": {
+  "description": "Professional yet approachable, with gentle, assured delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵舒": {
+  "description": "Gentle and thoughtful, with natural pauses and conversational fillers that evoke everyday life.",
+  "gender": "female"
+ },
+ "灵若虚_中性": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵若虚_厌恶": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵若虚_恐惧": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵若虚_悲伤": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵若虚_惊讶": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵若虚_生气": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵若虚_高兴": {
+  "description": "Clean and efficient, with thoughtful, objective yet warm delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵言澈_中性": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵言澈_厌恶": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵言澈_恐惧": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵言澈_悲伤": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵言澈_惊讶": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵言澈_生气": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵言澈_高兴": {
+  "description": "Warm, resonant and reassuring, with gentle, affectionate concern.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵语冰_中性": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵语冰_厌恶": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵语冰_恐惧": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵语冰_悲伤": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵语冰_惊讶": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵语冰_生气": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵语冰_高兴": {
+  "description": "Thoughtful and efficient, with precise articulation and objective, trustworthy delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵语尘_中性": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵语尘_厌恶": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵语尘_恐惧": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵语尘_悲伤": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵语尘_惊讶": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵语尘_生气": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵语尘_高兴": {
+  "description": "Low, husky and world-weary, conveying helplessness and resignation.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵语恬_中性": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵语恬_厌恶": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵语恬_恐惧": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵语恬_悲伤": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵语恬_惊讶": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵语恬_生气": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵语恬_高兴": {
+  "description": "Clear and gentle, with attentive, earnest delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵语汐": {
+  "description": "Clear, bright and youthful, with a sunny, energetic delivery.",
+  "gender": "female"
+ },
+ "灵语烟_中性": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵语烟_厌恶": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵语烟_恐惧": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵语烟_悲伤": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵语烟_惊讶": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵语烟_生气": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵语烟_高兴": {
+  "description": "Bright, crisp and lively, expressing surprise and everyday banter.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵语萱_中性": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵语萱_厌恶": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵语萱_恐惧": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵语萱_悲伤": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵语萱_惊讶": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵语萱_生气": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵语萱_高兴": {
+  "description": "Clear and sweet, with gentle yet firm affection, trust and reassurance.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵逸风_中性": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵逸风_厌恶": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵逸风_恐惧": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵逸风_悲伤": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵逸风_惊讶": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵逸风_生气": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵逸风_高兴": {
+  "description": "Fresh and youthful, with relaxed, casual and slightly evasive delivery.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵采薇_中性": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵采薇_厌恶": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵采薇_恐惧": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵采薇_悲伤": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵采薇_惊讶": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵采薇_生气": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵采薇_高兴": {
+  "description": "Warm and thoughtful, with clear articulation and calm, trustworthy delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵锐": {
+  "description": "Standard pronunciation and natural delivery, with pauses and self-corrections conveying difficult choices and determination.",
+  "gender": "male"
+ },
+ "灵阅川_中性": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "neutral",
+  "gender": "male"
+ },
+ "灵阅川_厌恶": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "disgusted",
+  "gender": "male"
+ },
+ "灵阅川_恐惧": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "fearful",
+  "gender": "male"
+ },
+ "灵阅川_悲伤": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "sad",
+  "gender": "male"
+ },
+ "灵阅川_惊讶": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "surprised",
+  "gender": "male"
+ },
+ "灵阅川_生气": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "angry",
+  "gender": "male"
+ },
+ "灵阅川_高兴": {
+  "description": "Deep and resonant, with experienced, composed and dignified storytelling.",
+  "emotion": "happy",
+  "gender": "male"
+ },
+ "灵雨汐_中性": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵雨汐_恐惧": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵雨汐_悲伤": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵雨汐_惊讶": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵雨汐_生气": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵雨汐_高兴": {
+  "description": "Soft and sweet, with natural breathiness and an affectionate, relaxed youthful delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵韵": {
+  "description": "Bright and crisp, with brisk, dependable delivery.",
+  "gender": "female"
+ },
+ "灵风信_中性": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵风信_厌恶": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵风信_恐惧": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵风信_悲伤": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵风信_惊讶": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵风信_生气": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵风信_高兴": {
+  "description": "Sweet and clear, with warm, concerned and reassuring delivery.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "灵骁": {
+  "description": "Gentle and sincere, with natural hesitation and repetition conveying fond memories.",
+  "gender": "male"
+ },
+ "灵黛嗔_中性": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "neutral",
+  "gender": "female"
+ },
+ "灵黛嗔_厌恶": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "disgusted",
+  "gender": "female"
+ },
+ "灵黛嗔_恐惧": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "fearful",
+  "gender": "female"
+ },
+ "灵黛嗔_悲伤": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "sad",
+  "gender": "female"
+ },
+ "灵黛嗔_惊讶": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "surprised",
+  "gender": "female"
+ },
+ "灵黛嗔_生气": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "angry",
+  "gender": "female"
+ },
+ "灵黛嗔_高兴": {
+  "description": "Warm, thoughtful and engaging, with sincere, confident recommendations.",
+  "emotion": "happy",
+  "gender": "female"
+ },
+ "甄嬛传_四郎": {
+  "description": null,
+  "gender": null
+ },
+ "皮六": {
+  "description": "Bright, youthful and confident, with strong contrast and dramatic emphasis.",
+  "gender": "male"
+ },
+ "花小呗": {
+  "description": "Crisp and sweet, with a distinctly childlike, lively delivery.",
+  "gender": "female"
+ },
+ "蜡笔小新": {
+  "description": "Low and full, with slow, innocent and distinctly cartoon-like delivery.",
+  "gender": "male"
+ },
+ "蜡笔小新_野原新之助": {
+  "description": null,
+  "gender": null
+ },
+ "蜡笔小新_野原美伢": {
+  "description": null,
+  "gender": null
+ },
+ "西游记_唐僧": {
+  "description": null,
+  "gender": null
+ },
+ "说唱小哥": {
+  "description": "Clear and rhythmic, with rap-like pacing and a relaxed, independent delivery.",
+  "gender": "male"
+ },
+ "雍正王朝_雍正": {
+  "description": null,
+  "gender": null
+ }
+}
