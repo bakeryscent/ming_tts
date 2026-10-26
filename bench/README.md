@@ -46,7 +46,16 @@ bench/.venv/bin/python bench/loadtest.py --concurrency 6 --duration 600 --warmup
 
 Other flags: `--voice US_James`, `--language en|es|fr|de|zh`,
 `--sample-rate 24000|44100`, `--timeout 120`, `--warmup 6`, `--rtf-target 0.8`,
-`--max-error-rate 0.05`, `--no-early-stop`, `--gpu-hourly 0.16`. `--help` lists all.
+`--max-error-rate 0.05`, `--no-early-stop`, `--gpu-hourly 0.16`,
+`--no-timestamps`. `--help` lists all.
+
+Requests ask for word timestamps by default, as the Bun API does. On a pod
+with `ALIGNER=mms_fa` that is what triggers forced alignment after every
+synthesis, so the default run measures the latency listeners will get with
+alignment; `--no-timestamps` sends `return_timestamps: false` and measures
+synthesis alone. Run the same sweep both ways (`_aligned` / `_plain`) to
+see what alignment costs at each level; the `align ms` column shows the
+server-side figure inside a single run.
 
 Each level runs `c` closed-loop clients: every client sends the next corpus
 sentence as soon as its previous one returns. All clients share one keep-alive
@@ -71,6 +80,8 @@ With a fixed `--requests N`, the last requests of a level run with fewer than
 | `chars/s` | input characters synthesized per wall second |
 | `queue ms` | mean server-reported `queue_ms` (time waiting for a free worker) |
 | `srv RTF` | mean server `runtime_ms / audio`: pure synthesis speed, without queue or network |
+| `align ms` | mean server `align_ms`: forced-alignment wall time per request, queue to the aligner included (`-` when it never ran: `ALIGNER=off` or `--no-timestamps`) |
+| `aligned` | successful requests whose `words_source` was `aligned` / all successful. Less than all means the aligner timed out, was loading or failed on a fragment, and those responses carried estimated timestamps |
 | `in-flight max` | peak concurrent requests this tool had open (sanity check that `c` was reached) |
 | `workers` | successful requests per server worker id (should be balanced) |
 

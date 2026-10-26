@@ -5,7 +5,8 @@
 #
 #   - sources /etc/ming.env if present (container env works just as well)
 #   - downloads the model before uvicorn starts, with retries, so the
-#     workers load from disk instead of racing one download
+#     workers load from disk instead of racing one download; the same for
+#     the forced-aligner weights when ALIGNER=mms_fa (into TORCH_HOME)
 #   - restarts uvicorn when it exits, with exponential backoff (2 s doubling
 #     to 60 s; reset once a run lasted longer than 60 s). Uvicorn exits with
 #     143 after a graceful SIGTERM: it re-raises the signal once drained.
@@ -75,6 +76,29 @@ resolve_model() {
     log "model ready at $MODEL_ID"
 }
 
+# ALIGNER=mms_fa: fetch torchaudio's MMS_FA checkpoint into TORCH_HOME (the
+# volume) before the aligner process needs it, so a flaky download is
+# retried here instead of crash-looping the aligner. Failure is not fatal:
+# the aligner keeps retrying from inside its process, and the API falls
+# back to estimated timestamps until it is ready.
+resolve_aligner() {
+    [ "${ALIGNER:-off}" = "mms_fa" ] || return 0
+    local attempt=1 delay=10
+    while [ "$attempt" -le 5 ]; do
+        log "fetching the MMS_FA aligner weights into ${TORCH_HOME:-the default torch cache}"
+        if "$PY" -c 'import torchaudio; torchaudio.pipelines.MMS_FA.get_model()' >/dev/null 2>&1; then
+            log "aligner weights ready"
+            return 0
+        fi
+        log "aligner download failed (attempt $attempt), retrying in ${delay}s"
+        ship_axiom "supervisor.aligner_download_failed" "WARN"
+        sleep "$delay"
+        delay=$((delay * 2 > 300 ? 300 : delay * 2))
+        attempt=$((attempt + 1))
+    done
+    log "aligner weights not available yet; the aligner process will retry"
+}
+
 # SIGTERM, then wait for uvicorn to drain (--timeout-graceful-shutdown) and
 # stop its workers; SIGKILL if it is still around after that.
 terminate_child() {
@@ -109,11 +133,12 @@ on_term() {
 trap on_term TERM INT
 
 resolve_model
+resolve_aligner
 
 backoff=2
 while true; do
     started=$(date +%s)
-    log "starting uvicorn on :$PORT (workers=${NUM_WORKERS:-3} backoff=${backoff}s)"
+    log "starting uvicorn on :$PORT (workers=${NUM_WORKERS:-3} aligner=${ALIGNER:-off} backoff=${backoff}s)"
     "$PY" -m uvicorn app.main:app \
         --host 0.0.0.0 --port "$PORT" --workers 1 \
         --timeout-keep-alive 30 --timeout-graceful-shutdown "$DRAIN_TIMEOUT" &

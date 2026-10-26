@@ -11,12 +11,13 @@ Server HTTP (FastAPI + pool di processi GPU) che espone [Ming-3.0-tts](https://g
 ## Layout
 ```
 app/        server: main.py (routes) · pool.py (coda + worker) · worker.py (processo GPU)
-            engine.py (request → MingTTS) · voices.py · timestamps.py · audio.py
+            engine.py (request → MingTTS) · voices.py · timestamps.py (stima) · audio.py
+            aligner.py (forced alignment MMS_FA) · aligner_service.py (il suo processo)
 scripts/    start.sh (supervisor, CMD dell'immagine) · boot_runpod.sh · smoke.sh
 bench/      loadtest.py (sweep di concorrenza) · locustfile.py · corpus.py
 voices/     voci clone di esempio (lingguang, DB30) + catalogo voci cinesi builtin
-tests/      71 test; il pool gira con FAKE_ENGINE=1, senza GPU né torch
-Dockerfile  pytorch 2.6 / CUDA 12.4 + Ming @ commit pinnato + flash-attn + pynini
+tests/      98 test; il pool gira con FAKE_ENGINE=1 e l'aligner con ALIGNER=fake, senza GPU né torch
+Dockerfile  pytorch 2.6 / CUDA 12.4 + Ming @ commit pinnato + flash-attn + pynini + uroman
 ```
 
 ## Sviluppo locale (Mac, senza GPU)
@@ -29,11 +30,12 @@ API_TOKEN=dev FAKE_ENGINE=1 NUM_WORKERS=2 .venv/bin/uvicorn app.main:app --port 
 ## Deploy
 1. Push su GitHub → la workflow pubblica `ghcr.io/<owner>/ming_tts:latest`.
 2. RunPod: template con quell'immagine, A5000, container 25 GB, volume 15 GB su `/workspace`, porta HTTP 8080, env `API_TOKEN` (+ `NUM_WORKERS=3`). Dettagli in `docs/RUNPOD.md`.
+   Timestamp parola: stimati di default; `ALIGNER=mms_fa` accende il forced aligner (un processo in più, ~1.2 GB VRAM) e le risposte passano a `words_source: "aligned"`.
 3. `URL=https://<podid>-8080.proxy.runpod.net API_TOKEN=... bash scripts/smoke.sh`
 4. `MING_URL=... MING_TOKEN=... bench/.venv/bin/python bench/loadtest.py --concurrency 1,2,3,4,6,8,12,16 --requests 48`
 
 ## Cosa non è ancora fatto
 - Il modello non è mai stato eseguito su GPU da questa macchina: la prima verifica reale è lo smoke test sul pod.
-- I timestamp parola sono **stimati** (`words_source: "estimated"`): un forced aligner è il passo successivo se la sottolineatura parola-per-parola deve essere precisa.
+- L'aligner (`ALIGNER=mms_fa`) non è ancora stato misurato su GPU: VRAM e `align_ms` reali vanno letti dal pod (`docs/RUNPOD.md`, passo 6) prima di accenderlo in produzione.
 - Il provider `ming.ts` nel repo `tts_api` (router, fallback, billing) va scritto a parte.
 - Ottimizzazioni di fase 2 (CUDA graphs sul DiT, MPS, batching) solo dopo le misure.

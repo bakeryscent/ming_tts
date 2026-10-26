@@ -13,6 +13,7 @@ SERVICE_NAME = "ming-tts-api"
 # Ming's decoder runs at 44.1 kHz; requests may ask for 24 kHz to halve the payload.
 NATIVE_SAMPLE_RATE = 44100
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+ALIGNER_BACKENDS = ("off", "mms_fa", "fake")
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -55,6 +56,11 @@ class Settings:
     # FAKE_ENGINE=1: workers return a synthetic tone instead of loading Ming.
     # Used by the test-suite to exercise the pool on machines without a GPU.
     fake_engine: bool = False
+    # ALIGNER=off|mms_fa|fake: forced word alignment (app.aligner) in one
+    # extra process; "fake" is the test stand-in. A request whose alignment
+    # takes longer than ALIGNER_TIMEOUT_S falls back to estimated timings.
+    aligner: str = "off"
+    aligner_timeout_s: float = 5.0
 
     @property
     def stuck_job_s(self) -> float:
@@ -67,11 +73,19 @@ class Settings:
         """
         return self.request_timeout_s * 2 + 30
 
+    @property
+    def stuck_align_s(self) -> float:
+        """Age at which a running alignment is declared hung and the aligner killed."""
+        return self.aligner_timeout_s * 2 + 10
+
     @classmethod
     def from_env(cls) -> "Settings":
         token = os.environ.get("API_TOKEN", "").strip()
         if not token:
             raise RuntimeError("API_TOKEN env var is required")
+        aligner = os.environ.get("ALIGNER", "").strip().lower() or "off"
+        if aligner not in ALIGNER_BACKENDS:
+            raise RuntimeError(f"ALIGNER must be one of {', '.join(ALIGNER_BACKENDS)}, got {aligner!r}")
         return cls(
             api_token=token,
             model_id=os.environ.get("MODEL_ID", "").strip() or DEFAULT_MODEL_ID,
@@ -83,4 +97,6 @@ class Settings:
             max_text_chars=_env_int("MAX_TEXT_CHARS", 1200, minimum=1),
             text_normalization=_env_bool("TEXT_NORMALIZATION", True),
             fake_engine=_env_bool("FAKE_ENGINE", False),
+            aligner=aligner,
+            aligner_timeout_s=_env_float("ALIGNER_TIMEOUT_S", 5.0),
         )

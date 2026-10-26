@@ -8,6 +8,9 @@
 # volume), so the image stays ~10 GB and every later start reuses the volume
 # copy. BAKE_MODEL=1 snapshots them into /app/model at build time instead
 # (bigger image, no download at start); start.sh uses /app/model when present.
+# The forced-aligner weights (ALIGNER=mms_fa, torchaudio MMS_FA, ~1.2 GB)
+# are never baked: start.sh fetches them into TORCH_HOME under the same
+# volume when the aligner is enabled.
 FROM pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -52,6 +55,11 @@ RUN pip install --no-cache-dir \
 # FST text normalization (TEXT_NORMALIZATION=1); PyPI has a cp311 manylinux wheel.
 RUN pip install --no-cache-dir pynini==2.1.6
 
+# Romanizer for the forced aligner (ALIGNER=mms_fa): MMS_FA aligns Latin
+# text only, uroman turns Chinese/Japanese/Korean (and accents) into it.
+# Pure Python, data files included; torchaudio already ships the pipeline.
+RUN pip install --no-cache-dir uroman==1.3.1.1
+
 # Optional: Ming falls back to PyTorch SDPA without flash-attn, so a missing
 # or incompatible wheel must not fail the build.
 ARG FLASH_ATTN_URL=https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.6cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
@@ -83,8 +91,10 @@ COPY scripts/ ./scripts/
 # expandable_segments lets each replica's CUDA allocator grow and shrink
 # without fragmenting the card the replicas share.
 ENV HF_HOME=/workspace/hf \
+    TORCH_HOME=/workspace/hf/torch \
     VOICES_DIR=/workspace/voices \
     MING_DIR=/app/ming \
+    ALIGNER=off \
     PORT=8080 \
     PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     MALLOC_ARENA_MAX=2 \

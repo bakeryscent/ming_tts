@@ -15,7 +15,9 @@ Returns `503 {"ok": false, ...}` while workers are still loading the model.
 ## GET /stats  (auth)
 Counters for observability: requests, errors, timeouts, rejected (429),
 queue depth, busy workers, p50/p95 latency over the last N requests,
-audio seconds generated, prompt-cache size, uptime, GPU name/VRAM used.
+audio seconds generated, prompt-cache size, uptime, GPU name/VRAM used,
+and `aligner` (`{"backend": "off"}`, or the aligner process's state, pid,
+restarts, jobs done, fallbacks, queue and VRAM when `ALIGNER` is enabled).
 
 ## GET /v1/voices  (auth)
 ```json
@@ -84,17 +86,34 @@ Response `200`:
   "sample_rate": 24000,
   "duration_seconds": 2.84,
   "words": [{"id": 0, "start": 0.00, "end": 0.21, "text": "The"}, ...],
-  "words_source": "estimated",
+  "words_source": "aligned",
   "inference_status": {"status": "succeeded", "cost": 0.0, "runtime_ms": 1310,
-                       "queue_ms": 40, "tokens_input": 42, "fragments": 1, "worker": 2}
+                       "queue_ms": 40, "tokens_input": 42, "fragments": 1, "worker": 2,
+                       "align_ms": 35}
 }
 ```
-- `words`: Ming has no alignment head. Phase 1 returns **estimated**
-  timestamps: audio duration (minus trailing silence) spread over the words
-  proportionally to a per-word weight (letters + punctuation pause bonus),
-  per fragment so multi-fragment utterances stay anchored. Same `Word`
-  shape as Kokoro/DeepInfra. `words_source` is `"estimated"` so the Bun API
-  can decide how to use them; a forced aligner can upgrade this later.
+- `words`: same `Word` shape as Kokoro/DeepInfra, one entry per
+  whitespace-delimited word (one per character for Chinese/Japanese), with
+  attached punctuation, in the caller's spelling (`"42"`, not `"forty two"`).
+  Times are seconds, rounded to ms, monotonic and non-overlapping.
+  `null` and `words: []` when `return_timestamps` is false.
+- `words_source` tells the Bun API how much to trust them:
+  - `"aligned"`: forced alignment (`ALIGNER=mms_fa`) placed every word on the
+    audio. Words the aligner cannot hear as letters (digits, symbols) take the
+    gap between their aligned neighbours. Expect Kokoro-grade accuracy
+    (~20–50 ms on word boundaries).
+  - `"estimated"`: Ming has no alignment head; without an aligner (the
+    default, `ALIGNER=off`) the audio duration (minus trailing silence) is
+    spread over the words proportionally to a per-word weight (letters +
+    punctuation pause bonus), per fragment so multi-fragment utterances stay
+    anchored. Also returned when the aligner is enabled but did not answer
+    for this request: still loading, crashed, timed out
+    (`ALIGNER_TIMEOUT_S`) or failed on at least one fragment (the other
+    fragments keep their aligned times, the failed one is estimated).
+- `inference_status.align_ms`: wall time of the alignment step, queue
+  included (`null` when `ALIGNER=off` or timestamps were not requested;
+  near 0 when the aligner was skipped because it is not ready). It is added
+  to the request's latency after synthesis; see "Forced alignment" below.
 - Task routing (server-side):
   | input                      | Ming task       | conditioning                       |
   |----------------------------|-----------------|------------------------------------|
@@ -118,6 +137,30 @@ bounded FIFO queue (`MAX_QUEUE`, default 16); requests over the cap get
 `429` immediately so the Bun router can fall back to another provider
 instead of piling up. One request occupies one worker end-to-end.
 
+## Forced alignment (`ALIGNER=mms_fa`)
+Optional, off by default until measured on the pod. One extra process
+(not one per worker) loads torchaudio's `MMS_FA` CTC aligner, a wav2vec2
+model trained on 1,100+ languages over romanized text, and serves the whole
+pool one job at a time. For every request with `return_timestamps`, after
+synthesis, the API sends it the PCM and the words; the aligner romanizes
+the words with `uroman` (pinyin, romaji, Latin for hangul, accents
+stripped), resamples the audio to 16 kHz, aligns each Ming fragment on its
+own slice of audio and returns word start/end in seconds.
+
+Cost: ~1.2 GB of VRAM (fp32 weights + activations) on top of the replicas,
+roughly one quarter of a Ming replica; plan `NUM_WORKERS=3` + aligner ≈
+16–17 GB. Latency: tens of ms of GPU time for a 3 s sentence (wav2vec2
+forward + Viterbi), plus the pipe round trip, serialised across the pool;
+`align_ms` in every response reports the real figure, and the load test
+(`bench/loadtest.py`, default on; `--no-timestamps` to compare) shows it
+per level. Alignment never fails a request: past `ALIGNER_TIMEOUT_S`
+(default 5 s), or when the process is loading, dead or errors, the
+response carries the estimate and `words_source: "estimated"`. The aligner
+process is restarted with backoff when it dies, like a worker. Weights
+(~1.2 GB) are downloaded by `scripts/start.sh` into `TORCH_HOME`
+(`/workspace/hf/torch`, the volume) on first start, never baked into the
+image. Languages: all seven Ming languages are supported.
+
 ## Env
 | var | default | meaning |
 |---|---|---|
@@ -130,5 +173,8 @@ instead of piling up. One request occupies one worker end-to-end.
 | `REQUEST_TIMEOUT_S` | `90` | per request, queue + synth |
 | `MAX_TEXT_CHARS` | `1200` | 413 above |
 | `TEXT_NORMALIZATION` | `1` | pynini FST TN on/off |
+| `ALIGNER` | `off` | `mms_fa` enables forced word alignment (`words_source: "aligned"`); `fake` is the test stand-in |
+| `ALIGNER_TIMEOUT_S` | `5` | alignment deadline per request (queue + GPU); past it the estimate is returned |
+| `TORCH_HOME` | `/workspace/hf/torch` | torchaudio cache for the aligner weights (volume disk) |
 | `PORT` | `8080` | |
 | `AXIOM_TOKEN` / `AXIOM_DATASET` | unset | structured log shipping (same as kokoro pod) |

@@ -11,6 +11,7 @@
 | Network volume | **No** | Vincola il pod a un datacenter e riduce la disponibilità di A5000. Serve solo se vuoi più pod che condividono le voci clonate. |
 | Pod vs Serverless | **Pod on-demand** | Serverless A5000 costa $0.69/h attivo + cold start (~40 s per caricare 3 repliche): conviene solo sotto il 25% di utilizzo. Con traffico continuo il pod flat vince, e hai già il router con fallback su DeepInfra per i buchi. |
 | Concorrenza | `NUM_WORKERS=3` processi, 1 modello ciascuno | Il decode di Ming è batch-size-1 e limitato dai lanci kernel: più processi riempiono la GPU in time-slicing. Ogni replica occupa ~4–5 GB (3 GB pesi + attivazioni + contesto CUDA): 3 repliche ≈ 15 GB, 4 ≈ 20 GB sui 24 disponibili. 2/3/4 va scelto con il load test. |
+| Timestamp parola | `ALIGNER=off` finché non è misurato; poi `mms_fa` | Ming non ha una testa di allineamento: di default i timestamp sono stimati (`words_source: "estimated"`). `ALIGNER=mms_fa` aggiunge **un solo** processo con l'aligner CTC `MMS_FA` di torchaudio (wav2vec2 multilingue, testo romanizzato con uroman) che serve tutto il pool: ~1.2 GB di VRAM in più (non per replica), decine di ms per frase in coda alla sintesi, timestamp reali (`"aligned"`). Se non risponde entro `ALIGNER_TIMEOUT_S` la risposta torna alla stima: mai un errore in più. Dettagli in `docs/API.md`, "Forced alignment". |
 
 ## Costo atteso
 A $0.16/h: **$117/mese** flat. Il load test stampa $/1000 secondi audio e $/1M caratteri alla capacità misurata.
@@ -36,6 +37,7 @@ Pods → Templates → New Template:
   REQUEST_TIMEOUT_S=90
   HF_HOME=/workspace/hf
   VOICES_DIR=/workspace/voices
+  ALIGNER=off            (mms_fa per i timestamp allineati, vedi sotto)
   AXIOM_TOKEN=...        (opzionale, come il pod Kokoro)
   AXIOM_DATASET=...
   ```
@@ -52,11 +54,24 @@ URL=https://<podid>-8080.proxy.runpod.net API_TOKEN=<token> bash scripts/smoke.s
 ### 5. Misura il carico
 Vedi `bench/README.md`. In breve: sweep di concorrenza 1→16, poi 10 minuti sostenuti al livello scelto; ripeti con `NUM_WORKERS=2`, `3`, `4` e tieni quello con più secondi-audio/secondo con p95 RTF < 0.8. Guarda `nvidia-smi dmon -s um` via SSH durante il test: se SM% resta sotto ~70% con 4 worker, è il momento delle ottimizzazioni di fase 2.
 
+### 6. Accendi l'aligner
+Imposta `ALIGNER=mms_fa` nel template e riavvia il pod: `start.sh` scarica
+i pesi MMS_FA (~1.2 GB) in `TORCH_HOME=/workspace/hf/torch` (volume: una
+volta sola), poi uvicorn avvia il processo aligner accanto ai worker.
+`/stats` → `aligner.state` passa da `starting` a `idle`; da lì le risposte
+hanno `words_source: "aligned"` e `inference_status.align_ms`. Costo da
+verificare sul pod: VRAM (`/stats` → `gpu.vram_used_mb`, aspettati +1.2 GB)
+e latenza (`align ms` nella tabella del load test, e la colonna `aligned`
+che conta quante risposte sono state davvero allineate: se non è `n/n`,
+l'aligner è in coda oltre `ALIGNER_TIMEOUT_S` e vale la pena di alzarlo o
+di togliere una replica). Confronto A/B: stesso sweep con `--no-timestamps`.
+Se con 4 repliche la VRAM sfiora i 24 GB, resta a 3 + aligner.
+
 ## Fase 2 (dopo le misure, in ordine di resa/costo)
 1. **CUDA graphs / torch.compile sul passo DiT** (10 step di flow matching × 8 layer per ogni 80 ms di audio: è il collo di bottiglia dei lanci kernel). Stimato 1.5–2× sul throughput per replica.
 2. **CUDA MPS** nel container (`nvidia-cuda-mps-control -d` prima di uvicorn): fa girare davvero in parallelo i kernel dei processi worker invece del time-slicing. Funziona su molti host RunPod ma non su tutti: va provato.
 3. **Decode batched** (batch > 1 nello stesso processo): il guadagno maggiore ma richiede modificare `modeling_bailingmm.sample` (padding, position ids, latent history per riga). Solo se 1+2 non bastano.
-4. **Forced alignment** (torchaudio MMS_FA) per timestamp parola reali, se la sottolineatura stimata non basta.
+4. ~~Forced alignment~~ fatto: `ALIGNER=mms_fa` (passo 6 della procedura); resta da misurare sul pod.
 
 ## Note operative
 - Il proxy RunPod aggiunge ~100–400 ms al primo handshake TLS: il client Bun usa keep-alive (come per Kokoro). Una frase da 3 s con RTF 0.3 risponde in ~1 s netto.

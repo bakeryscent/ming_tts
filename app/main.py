@@ -23,12 +23,14 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 
 from app import engine
+from app.aligner import merge_alignment
+from app.aligner_service import AlignerService
 from app.audio import encode_audio, pcm_duration_seconds
 from app.axiom_handler import setup_logging
 from app.config import MAX_UPLOAD_BYTES, SERVICE_NAME, Settings
 from app.errors import ApiError, PayloadTooLarge
 from app.pool import WorkerPool
-from app.timestamps import Fragment, estimate_words
+from app.timestamps import Fragment, estimate_words, fragment_tokens
 from app.voices import VoiceRegistry
 
 setup_logging(SERVICE_NAME)
@@ -52,6 +54,8 @@ class InferenceStatus(BaseModel):
     tokens_input: int
     fragments: int
     worker: int
+    # Milliseconds spent in forced alignment (None when it did not run).
+    align_ms: int | None = None
 
 
 class TTSResponse(BaseModel):
@@ -113,7 +117,29 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Under FAKE_ENGINE the Ming checkout is optional (tests without the repo).
     tts_tasks = engine.load_tts_tasks(settings.ming_dir, required=not settings.fake_engine)
     pool = WorkerPool(settings)
+    aligner = AlignerService(settings) if settings.aligner != "off" else None
     metrics = Metrics()
+
+    async def timestamps(result, plan: engine.SynthesisPlan) -> tuple[list[dict], str, int | None]:
+        """``(words, words_source, align_ms)`` for one synthesis result.
+
+        Aligned when the aligner answered in time for every fragment;
+        otherwise the estimate (app.timestamps), possibly for some
+        fragments only, labelled ``"estimated"``.
+        """
+        fragments, offset = [], 0.0
+        for text, seconds in result.fragments:
+            fragments.append(Fragment(text=text, offset=offset, duration=seconds))
+            offset += seconds
+        if aligner is None:
+            return estimate_words(fragments, source_text=plan.text), "estimated", None
+        started = time.monotonic()
+        words = [[token.text for token in tokens]
+                 for tokens in fragment_tokens(fragments, source_text=plan.text)]
+        spans = await aligner.align(result.pcm, result.sample_rate, plan.language, fragments, words)
+        align_ms = int((time.monotonic() - started) * 1000)
+        merged, fully_aligned = merge_alignment(fragments, plan.text, spans)
+        return merged, "aligned" if fully_aligned else "estimated", align_ms
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
@@ -122,9 +148,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "workers": settings.num_workers, "max_queue": settings.max_queue,
             "request_timeout_s": settings.request_timeout_s, "model_id": settings.model_id,
             "voices_dir": str(settings.voices_dir), "voices_seeded": seeded,
-            "fake_engine": settings.fake_engine})
+            "fake_engine": settings.fake_engine, "aligner": settings.aligner})
         await pool.start()
+        if aligner is not None:
+            await aligner.start()
         yield
+        if aligner is not None:
+            await aligner.stop()
         await pool.stop()
 
     app = FastAPI(title=SERVICE_NAME, lifespan=lifespan)
@@ -175,6 +205,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "workers": workers,
             "prompt_cache_size": sum(w.get("prompt_cache_size", 0) for w in details),
             "clone_voices": registry.clone_count(),
+            "aligner": aligner.snapshot() if aligner is not None else {"backend": "off"},
             "gpu": {
                 "name": gpu.get("gpu_name"),
                 "vram_total_mb": gpu.get("vram_total_mb"),
@@ -228,12 +259,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
         duration = pcm_duration_seconds(result.pcm, result.sample_rate)
         words: list[dict] = []
+        words_source: str | None = None
+        align_ms: int | None = None
         if req.return_timestamps:
-            fragments, offset = [], 0.0
-            for text, seconds in result.fragments:
-                fragments.append(Fragment(text=text, offset=offset, duration=seconds))
-                offset += seconds
-            words = estimate_words(fragments, source_text=plan.text)
+            words, words_source, align_ms = await timestamps(result, plan)
         latency_ms = (time.monotonic() - started) * 1000
         metrics.record_success(latency_ms, duration)
         log.info("synth", extra={
@@ -241,6 +270,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "language": plan.language, "chars": len(plan.text),
             "fragments": len(result.fragments), "audio_s": round(duration, 3),
             "queue_ms": result.queue_ms, "runtime_ms": result.runtime_ms,
+            "align_ms": align_ms, "words_source": words_source,
             "latency_ms": int(latency_ms),
             "rtf": round(result.runtime_ms / 1000 / duration, 3) if duration else None,
             "worker": result.worker})
@@ -251,13 +281,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             sample_rate=result.sample_rate,
             duration_seconds=round(duration, 3),
             words=[WordOut(**word) for word in words],
-            # Ming has no alignment head: timings are spread over the audio
-            # by word length (app.timestamps), and labelled as such.
-            words_source="estimated" if req.return_timestamps else None,
+            # "aligned" (forced alignment, ALIGNER=mms_fa) or "estimated"
+            # (spread over the audio by word length, app.timestamps).
+            words_source=words_source,
             inference_status=InferenceStatus(
                 runtime_ms=result.runtime_ms, queue_ms=result.queue_ms,
                 tokens_input=len(plan.text), fragments=len(result.fragments),
-                worker=result.worker),
+                worker=result.worker, align_ms=align_ms),
         )
 
     return app

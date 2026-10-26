@@ -138,6 +138,23 @@ def test_summary_math_and_429_accounting() -> None:
     assert not loadtest.meets_target(s, 0.8)
 
 
+def test_alignment_accounting() -> None:
+    records = [
+        record(1.0, 2.0, align_ms=40, words_source="aligned"),
+        record(1.0, 2.0, align_ms=60, words_source="aligned"),
+        record(1.0, 2.0, align_ms=500, words_source="estimated"),  # timed out: fell back
+        record(1.0, 2.0),  # return_timestamps=false or ALIGNER=off
+        record(0.3, 0.0, status=500, first_status=500, error="boom", align_ms=9, words_source="aligned"),
+    ]
+    s = loadtest.summarize_level(2, records, wall_s=2.0, max_in_flight=2)
+    assert s.align_ms_mean == pytest.approx(200.0)
+    assert s.aligned == 2
+    assert "| 200 | 2/4 |" in loadtest.table_row(s)
+    without = loadtest.summarize_level(1, [record(1.0, 2.0)], wall_s=1.0, max_in_flight=1)
+    assert without.align_ms_mean is None and without.aligned == 0
+    assert "| - | 0/1 |" in loadtest.table_row(without)
+
+
 def test_capacity_estimate_and_cost() -> None:
     def level(c: int, latency_s: float, wall_s: float) -> loadtest.LevelSummary:
         return loadtest.summarize_level(c, [record(latency_s, 2.0) for _ in range(10)], wall_s, c)

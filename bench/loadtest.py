@@ -53,6 +53,9 @@ class Settings:
     max_error_rate: float = 0.05
     early_stop: bool = True
     gpu_hourly_usd: float = 0.16
+    # return_timestamps on every request. With ALIGNER enabled on the server
+    # this is what triggers forced alignment; off measures synthesis alone.
+    timestamps: bool = True
 
 
 @dataclass
@@ -68,6 +71,8 @@ class RequestRecord:
     queue_ms: float | None = None
     worker: int | None = None
     fragments: int | None = None
+    align_ms: float | None = None  # server-side forced alignment time (None: did not run)
+    words_source: str | None = None  # "aligned" | "estimated" | None
     error: str | None = None
 
     @property
@@ -108,6 +113,8 @@ class LevelSummary:
     requests_per_s: float
     queue_ms_mean: float | None
     server_rtf_mean: float | None
+    align_ms_mean: float | None  # mean server align_ms over requests where alignment ran
+    aligned: int  # successful requests whose words_source was "aligned"
     littles_in_flight: float | None  # throughput x mean latency / mean audio; ~c in a healthy closed loop
     max_in_flight: int
     workers: dict[str, int]
@@ -200,6 +207,8 @@ def _fill_from_body(record: RequestRecord, response: httpx.Response, default_sam
     record.queue_ms = status.get("queue_ms")
     record.worker = status.get("worker")
     record.fragments = status.get("fragments")
+    record.align_ms = status.get("align_ms")
+    record.words_source = body.get("words_source")
     return record
 
 
@@ -211,6 +220,7 @@ async def synthesize(client: httpx.AsyncClient, settings: Settings, text: str, l
         "language": settings.language,
         "sample_rate": settings.sample_rate,
         "output_format": "pcm",
+        "return_timestamps": settings.timestamps,
     }
     started = time.perf_counter()
     first_status: int | None = None
@@ -260,6 +270,7 @@ def summarize_level(
     queue = [float(r.queue_ms) for r in ok if r.queue_ms is not None]
     server_rtfs = [r.runtime_ms / 1000 / r.audio_s for r in ok if r.runtime_ms is not None]
     workers = Counter(str(r.worker) for r in ok if r.worker is not None)
+    align = [float(r.align_ms) for r in ok if r.align_ms is not None]
     return LevelSummary(
         concurrency=concurrency,
         n=len(records),
@@ -284,6 +295,8 @@ def summarize_level(
         requests_per_s=len(ok) / wall_s if wall_s > 0 else 0.0,
         queue_ms_mean=mean(queue),
         server_rtf_mean=mean(server_rtfs),
+        align_ms_mean=mean(align),
+        aligned=sum(1 for r in ok if r.words_source == "aligned"),
         littles_in_flight=throughput * latency_mean / audio_mean if latency_mean and audio_mean else None,
         max_in_flight=max_in_flight,
         workers=dict(sorted(workers.items())),
@@ -420,8 +433,8 @@ async def run_sweep(
 
 TABLE_HEADER = (
     "| c | n | ok | 429 raw / retried-ok | other err | p50 s | p95 s | p99 s | RTF mean | RTF p95 "
-    "| audio s/s | chars/s | queue ms | srv RTF | in-flight max | workers |\n"
-    "|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|:--|"
+    "| audio s/s | chars/s | queue ms | srv RTF | align ms | aligned | in-flight max | workers |\n"
+    "|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|:--|"
 )
 
 
@@ -437,7 +450,7 @@ def table_row(s: LevelSummary) -> str:
         f"| {_fmt(s.latency_p50_s)} | {_fmt(s.latency_p95_s)} | {_fmt(s.latency_p99_s)} "
         f"| {_fmt(s.rtf_mean)} | {_fmt(s.rtf_p95)} | {_fmt(s.throughput_audio_s_per_s)} "
         f"| {_fmt(s.chars_per_s, 1)} | {_fmt(s.queue_ms_mean, 0)} | {_fmt(s.server_rtf_mean)} "
-        f"| {s.max_in_flight} | {workers} |"
+        f"| {_fmt(s.align_ms_mean, 0)} | {s.aligned}/{s.ok} | {s.max_in_flight} | {workers} |"
     )
 
 
@@ -473,7 +486,8 @@ def render_markdown(result: SweepResult, settings: Settings, mode: str, health: 
         "# Ming TTS capacity sweep",
         "",
         f"- Server: `{settings.url}` (workers: {workers})",
-        f"- Voice `{settings.voice}`, language `{settings.language}`, {settings.sample_rate} Hz, {mode}",
+        f"- Voice `{settings.voice}`, language `{settings.language}`, {settings.sample_rate} Hz, "
+        f"timestamps {'on' if settings.timestamps else 'off'}, {mode}",
         f"- RTF target (p95): {settings.rtf_target:.2f}; early stop: {'on' if settings.early_stop else 'off'}",
         "",
         TABLE_HEADER,
@@ -522,6 +536,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-error-rate", type=float, default=0.05, help="early-stop error rate (default 0.05)")
     p.add_argument("--no-early-stop", action="store_true", help="run every level even past the target")
     p.add_argument("--gpu-hourly", type=float, default=0.16, help="GPU price in USD/h for the cost line")
+    p.add_argument(
+        "--no-timestamps",
+        dest="timestamps",
+        action="store_false",
+        help="send return_timestamps=false: no forced alignment on the server (compare with a default run)",
+    )
     p.add_argument("--out", type=Path, default=Path("results.json"))
     p.add_argument("--md", type=Path, default=Path("results.md"))
     return p
@@ -550,6 +570,7 @@ async def main_async(args: argparse.Namespace) -> int:
         max_error_rate=args.max_error_rate,
         early_stop=not args.no_early_stop,
         gpu_hourly_usd=args.gpu_hourly,
+        timestamps=args.timestamps,
     )
     levels = parse_levels(args.concurrency)
     requests = None if args.duration else args.requests
