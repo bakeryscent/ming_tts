@@ -74,6 +74,16 @@ Se con 4 repliche la VRAM sfiora i 24 GB, resta a 3 + aligner.
 4. ~~Forced alignment~~ fatto: `ALIGNER=mms_fa` (passo 6 della procedura); resta da misurare sul pod.
 
 ## Note operative
+- **La CPU conta quanto la GPU.** Ming è limitato dalla CPU che lancia i kernel: con una richiesta la GPU lavora al 15-40%. Misure dell'immagine `ccc13ac`, 3 repliche, 16 step, L2, compile attivo, solo Ming:
+
+  | GPU | CPU | p95 calcolo/audio, 1 richiesta | 2 richieste | 3 richieste | audio/s a 3 |
+  |---|---|---|---|---|---|
+  | RTX A5000 | Ryzen 9 5950X | 0.64 | 0.69 | 0.90 | 3.4 |
+  | RTX A5000 | Xeon E5-2680 v4 | 1.94 | 1.92 | 1.92 | 1.8 |
+  | RTX 4090 (con Kokoro a 1.6 req/s) | Ryzen 5 5600X | 0.65 | 0.66 | 0.71 | 4.3 |
+
+  Con lo Xeon non regge la lettura dal vivo. Prima di scegliere un pod controlla la CPU (`lscpu`) e rifai `bench/loadtest.py`. VRAM: 10.3 GB con 3 repliche, quindi c'è posto per Kokoro (circa 6.7 GB).
+- `/stats` → `workers[].compiled` dice se `torch.compile` è attivo. `false` vuol dire che la compilazione è fallita e il worker gira senza (circa il doppio del calcolo); il motivo è nel log (`compile_failed_running_without`).
 - Il proxy RunPod aggiunge ~100–400 ms al primo handshake TLS: il client Bun usa keep-alive (come per Kokoro). Una frase da 3 s con RTF 0.3 risponde in ~1 s netto.
 - Il proxy RunPod chiude le richieste HTTP oltre ~100 s: `REQUEST_TIMEOUT_S=90` sta sotto. Il Bun API spezza già i testi in frasi, `MAX_TEXT_CHARS=1200` è una rete di sicurezza.
 - Stop del pod = container disk perso, volume conservato: al riavvio niente nuovo download dei pesi.
