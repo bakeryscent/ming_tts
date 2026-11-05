@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from app import engine
 from app.engine import DEFAULT_SEED, SynthesisPlan, TTSRequest, plan_request
@@ -25,10 +26,29 @@ def test_builtin_voice_routes_to_ip(plan):
     result = plan(text="The garden will remain open until sunset.", voice="US_James")
     assert result.task == "IP"
     assert result.controls == {"ip": "US_James"}
-    assert result.use_zero_spk_emb and not result.use_spk_emb
+    assert result.use_spk_emb and not result.use_zero_spk_emb
+    assert result.spk_emb_path.endswith("fingerprints/US_James.pt")
     assert result.prompt_wav_path is None
     assert result.language == "en" and result.language_id is None
     assert result.seed == DEFAULT_SEED and result.sample_rate == 24000
+    assert result.flow_steps == 16 and result.leveling
+
+
+def test_builtin_voice_without_a_fingerprint_uses_no_speaker(plan):
+    result = plan(text="The garden will remain open until sunset.", voice="US_Emma")
+    assert result.use_zero_spk_emb and not result.use_spk_emb
+    assert result.spk_emb_path is None
+
+
+def test_flow_steps_and_leveling_are_passed_on(plan):
+    result = plan(text="Hello.", voice="US_James", flow_steps=10, leveling=False)
+    assert result.flow_steps == 10 and not result.leveling
+
+
+@pytest.mark.parametrize("steps", [4, 8, 32])
+def test_unknown_flow_steps_are_rejected(steps):
+    with pytest.raises(ValidationError):
+        TTSRequest(text="Hello.", voice="US_James", flow_steps=steps)
 
 
 def test_chinese_builtin_voice(plan):
@@ -72,6 +92,18 @@ def test_instruction_routes_to_freeform(plan):
     assert result.controls is None and result.use_zero_spk_emb
 
 
+def test_instruction_with_a_voice_uses_half_of_its_fingerprint(plan):
+    result = plan(text="The old radio crackled.", voice="US_James", instruction="Warm storytelling.")
+    assert result.task == "FREEFORM" and result.voice == "US_James"
+    assert result.use_spk_emb and not result.use_zero_spk_emb
+    assert result.spk_emb_path.endswith("fingerprints_direction/US_James.pt")
+
+
+def test_instruction_works_with_a_voice_that_skips_the_plain_fingerprint(plan):
+    result = plan(text="The old radio crackled.", voice="US_Emma", instruction="Warm storytelling.")
+    assert result.spk_emb_path.endswith("fingerprints_direction/US_Emma.pt")
+
+
 def test_emotion_control_needs_only_the_speaker_embedding(plan):
     result = plan(text="所有测试都通过了！", voice="lingguang", controls={"emotion": "高兴"})
     assert result.task == "EMOTION"
@@ -96,6 +128,7 @@ def test_dialect_control_drops_language_id(plan):
     ({"text": "hi"}, BadRequest),
     ({"text": "hi", "voice": "US_James", "style": "deep voice"}, BadRequest),
     ({"text": "hi", "voice": "lingguang", "instruction": "whisper"}, BadRequest),
+    ({"text": "hi", "voice": "悟空", "instruction": "whisper"}, BadRequest),
     ({"text": "hi", "style": "deep voice", "instruction": "whisper"}, BadRequest),
     ({"text": "hi", "style": "deep voice", "controls": {"emotion": "高兴"}}, BadRequest),
     ({"text": "hi", "voice": "US_James", "controls": {"emotion": "高兴"}}, BadRequest),

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import sys
 import time
 import warnings
@@ -24,6 +25,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from app.audio import float_to_pcm16
 from app.config import NATIVE_SAMPLE_RATE, Settings
 from app.errors import BadRequest, PayloadTooLarge
+from app.leveling import level
 from app.voices import MULTILINGUAL_LANGUAGES, VoiceRegistry, detect_language
 
 log = logging.getLogger("ming-tts-api.engine")
@@ -37,6 +39,21 @@ DEFAULT_SEED = 1895
 BASIC_DEFAULTS = {"speed": "中速", "pitch": "中", "volume": "中"}
 
 WARMUP_TEXT = "The voice model is warming up."
+
+# Ming's default is 10; below that the voice turns robotic.
+FLOW_STEPS = 16
+
+
+def _keep_lowercase_a_out_of_units() -> None:
+    """Stop Ming reading "9:30 a.m." and "5 a day" as amperes.
+
+    Its unit pattern ignores case, so a number followed by the word "a" matches
+    the unit "A". Only the capital letter means amperes.
+    """
+    from frontend import number_en
+
+    pattern = number_en._unit_re.pattern.replace("|A|", "|(?-i:A)|")
+    number_en._unit_re = re.compile(pattern, re.IGNORECASE)
 
 
 def add_ming_to_path(ming_dir: Path) -> None:
@@ -78,6 +95,8 @@ class TTSRequest(BaseModel):
     sigma: float = Field(0.25, gt=0.0, le=2.0)
     temperature: float = Field(0.0, ge=0.0, le=2.0)
     max_length: int = Field(24, ge=4, le=200)
+    flow_steps: Literal[5, 6, 7, 10, 12, 16] = 16
+    leveling: bool = True
 
     @field_validator("voice", "style", "instruction", mode="before")
     @classmethod
@@ -109,6 +128,7 @@ class SynthesisPlan:
     controls: dict[str, str] | None = None
     prompt_wav_path: str | None = None
     prompt_text: str | None = None
+    spk_emb_path: str | None = None
     use_spk_emb: bool = False
     use_zero_spk_emb: bool = False
     cfg: float = 2.0
@@ -117,6 +137,8 @@ class SynthesisPlan:
     max_length: int = 24
     seed: int = DEFAULT_SEED
     sample_rate: int = 24000
+    flow_steps: int = 16
+    leveling: bool = True
 
     def synthesize_kwargs(self) -> dict[str, Any]:
         """Keyword arguments for ``MingTTS.synthesize``."""
@@ -124,6 +146,7 @@ class SynthesisPlan:
             "task": self.task, "text": self.text, "language_id": self.language_id,
             "instruction": self.instruction, "controls": self.controls,
             "prompt_wav_path": self.prompt_wav_path, "prompt_text": self.prompt_text,
+            "spk_emb_path": self.spk_emb_path,
             "use_spk_emb": self.use_spk_emb, "use_zero_spk_emb": self.use_zero_spk_emb,
             "cfg": self.cfg, "sigma": self.sigma, "temperature": self.temperature,
             "max_length": self.max_length,
@@ -168,21 +191,29 @@ def plan_request(
         "text": text, "language": language, "cfg": req.cfg, "sigma": req.sigma,
         "temperature": req.temperature, "max_length": req.max_length,
         "seed": DEFAULT_SEED if req.seed is None else req.seed,
-        "sample_rate": req.sample_rate,
+        "sample_rate": req.sample_rate, "flow_steps": req.flow_steps, "leveling": req.leveling,
     }
 
     if req.style is not None and req.voice is not None:
         raise BadRequest("style and voice are mutually exclusive")
-    if req.instruction is not None and (req.voice is not None or req.style is not None):
-        # Ming's README: freeform is not combined with voice design, a
-        # built-in voice or a reference; it is best without a reference.
-        raise BadRequest("instruction cannot be combined with voice or style")
+    if req.instruction is not None and req.style is not None:
+        raise BadRequest("instruction cannot be combined with style")
     if controls and req.voice is None:
         raise BadRequest("controls need a clone voice (they condition on its reference audio)")
 
     if req.instruction is not None:
-        plan = SynthesisPlan(task="FREEFORM", instruction=req.instruction,
-                             use_zero_spk_emb=True, language_id=extra_language_id, **common)
+        if req.voice is None:
+            plan = SynthesisPlan(task="FREEFORM", instruction=req.instruction,
+                                 use_zero_spk_emb=True, language_id=extra_language_id, **common)
+        else:
+            # Without a speaker the model picks any voice. Half of the voice's
+            # fingerprint keeps it recognizable; the full one flattens the delivery.
+            fingerprint = registry.fingerprint(registry.get(req.voice).id, direction=True)
+            if fingerprint is None:
+                raise BadRequest("instruction with a voice needs a voice with a fingerprint")
+            plan = SynthesisPlan(task="FREEFORM", voice=req.voice, instruction=req.instruction,
+                                 spk_emb_path=fingerprint, use_spk_emb=True,
+                                 language_id=extra_language_id, **common)
     elif req.style is not None:
         plan = SynthesisPlan(task="VOICE_DESIGN", controls={"style": req.style},
                              use_zero_spk_emb=True, language_id=extra_language_id, **common)
@@ -193,8 +224,12 @@ def plan_request(
         if voice.kind == "builtin":
             if controls:
                 raise BadRequest("controls need a clone voice, not a built-in one")
+            # The fingerprint keeps the voice steady between fragments and requests.
+            fingerprint = registry.fingerprint(voice.id)
             plan = SynthesisPlan(task="IP", voice=voice.id, controls={"ip": voice.id},
-                                 use_zero_spk_emb=True, language_id=extra_language_id, **common)
+                                 spk_emb_path=fingerprint, use_spk_emb=fingerprint is not None,
+                                 use_zero_spk_emb=fingerprint is None,
+                                 language_id=extra_language_id, **common)
         elif controls:
             task, controls = _control_task(controls, tts_tasks)
             # The control tasks condition on the speaker embedding only, as in
@@ -296,6 +331,14 @@ class MingBackend:
         if self.model.sample_rate != NATIVE_SAMPLE_RATE:
             raise RuntimeError(f"unexpected model sample rate {self.model.sample_rate}")
         self.load_s = round(time.perf_counter() - started, 2)
+        _keep_lowercase_a_out_of_units()
+        if settings.compile_dit:
+            head = self.model.model.flowloss.cfm.model
+            head.forward = torch.compile(head.forward)
+        self._flow_steps = FLOW_STEPS
+        flow = self.model.model.flowloss
+        flow_sample = flow.sample
+        flow.sample = lambda *args, **kwargs: flow_sample(*args, **{**kwargs, "steps": self._flow_steps})
         # MingTTS caches encoded prompts by path. A clone deleted and re-created
         # under the same id has the same path, so the file's mtime is tracked
         # to drop stale entries.
@@ -337,6 +380,7 @@ class MingBackend:
         torch = self._torch
         if plan.prompt_wav_path:
             self._refresh_prompt(plan.prompt_wav_path)
+        self._flow_steps = plan.flow_steps
         self._seed_everything(plan.seed)
 
         # MingTTS.synthesize returns the joined waveform only. Wrapping the
@@ -363,6 +407,8 @@ class MingBackend:
         finally:
             del inner.generate  # drop the instance attribute; the class method is back
 
+        if plan.leveling:
+            waveform = torch.from_numpy(level(waveform.squeeze(0).numpy(), NATIVE_SAMPLE_RATE)).unsqueeze(0)
         if plan.sample_rate != NATIVE_SAMPLE_RATE:
             waveform = self._resample(waveform, NATIVE_SAMPLE_RATE, plan.sample_rate)
         pcm = float_to_pcm16(waveform.numpy())

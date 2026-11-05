@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from typing import Any, AsyncIterator
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -158,6 +159,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         await pool.stop()
 
     app = FastAPI(title=SERVICE_NAME, lifespan=lifespan)
+    if settings.cors_origins:
+        app.add_middleware(CORSMiddleware, allow_origins=list(settings.cors_origins),
+                           allow_methods=["*"], allow_headers=["*"], max_age=600)
 
     @app.exception_handler(ApiError)
     async def _api_error(_request: Request, error: ApiError) -> JSONResponse:

@@ -32,11 +32,18 @@ US_Emma, US_James, US_Stella, UK_George, UK_Charlotte, plus the Chinese
 catalog in the Ming cookbook. `clone` voices are a reference wav + its
 transcript stored under `VOICES_DIR` (`<id>.wav` + `<id>.json`).
 
+The image also ships 25 preset clones: `en_*` and `zh_*` are copies of the premium
+voices, needed for emotion, speed/pitch/volume and inline sounds, which take a clone;
+`de_*`, `es_*`, `fr_*`, `ko_*` and `ja_*` are three synthetic voices per language,
+designed with Ming from a text description. Presets seed an empty `VOICES_DIR` only.
+
 ## POST /v1/voices/clone  (auth, multipart/form-data)
 Fields: `audio` (wav/mp3/flac, 1–20 s, mono or stereo), `prompt_text`
 (exact transcript of the audio, required), `language` (`en`|`zh`|...),
 optional `id` (slug; server generates `clone_<8hex>` otherwise).
-Stores the reference under `VOICES_DIR`, returns the voice object above.
+Stores the reference under `VOICES_DIR`, returns the voice object above. Silence after
+the last sound is cut first: Ming continues from the tail of the reference, and a silent
+tail makes the new audio start abruptly. `prompt_seconds` is the length after the cut.
 `400` on bad audio/length, `409` if `id` exists.
 
 ## DELETE /v1/voices/{id}  (auth)
@@ -63,10 +70,16 @@ Removes a `clone` voice. `404` if missing, `405` for `builtin`.
 - `text`: required, 1..`MAX_TEXT_CHARS` (env, default 1200). Longer → `413`.
   Callers (the Bun API) already split text into sentences; the server
   additionally splits into Ming fragments (`max_length`) internally.
-- `voice`: a voice id from `/v1/voices`. Mutually exclusive with `style`.
+- `voice`: a voice id from `/v1/voices`. Mutually exclusive with `style`. Premium voices
+  with a file in `voices/fingerprints/` also get that speaker fingerprint, which keeps them
+  steady between fragments and requests.
 - `style`: voice-design description (task `VOICE_DESIGN`); no `voice`.
-- `instruction`: free-form delivery instruction (task `FREEFORM`), no `voice`
-  required (the model is better without a reference here).
+- `instruction`: free-form delivery instruction (task `FREEFORM`). Without `voice` the
+  model picks the voice, and it can change between requests. With a premium `voice` that
+  has a file in `voices/fingerprints_direction/` (half of its fingerprint) the voice stays
+  recognizable; the full fingerprint flattens the delivery. This keeps the voice better
+  than the free mode, but Ming does not document the combination, and it may need a
+  firmly worded instruction. Other voices with an instruction get a `400`.
 - `language`: `en`, `zh`, `de`, `es`, `fr`, `ko`, `ja`; `auto` = detect
   zh vs en from the text. Non-zh/en languages route to task `MULTILINGUAL`.
 - `controls`: optional, one of the Ming structured control sets:
@@ -77,6 +90,11 @@ Removes a `clone` voice. `404` if missing, `405` for `builtin`.
 - `sample_rate`: 24000 (default, halves payload vs native) or 44100 (native).
 - `output_format`: `pcm` (s16le, base64) or `wav` (base64 RIFF).
 - `seed`: int or null (null → fixed default 1895, deterministic like `infer.py`).
+- `flow_steps`: 5, 6, 7, 10, 12 or 16 (default 16). Ming's default is 10, and below that
+  the voice turns robotic. 16 costs about 20% more compute than 10.
+- `leveling`: default true. Keeps tone and loudness steady across the audio
+  (`app/leveling.py`), which reduces the swing from sentence to sentence on headphones.
+  It does not remove the drop in clarity along a sentence, which comes from the model.
 
 Response `200`:
 ```json
@@ -117,11 +135,12 @@ Response `200`:
 - Task routing (server-side):
   | input                      | Ming task       | conditioning                       |
   |----------------------------|-----------------|------------------------------------|
-  | `voice` = builtin          | `IP`            | `controls={"ip": id}`, zero spk emb |
+  | `voice` = builtin          | `IP`            | `controls={"ip": id}`, fingerprint or zero spk emb |
   | `voice` = clone            | `TTS`           | prompt wav + prompt text, spk emb  |
   | `voice` = clone, lang≠zh/en| `MULTILINGUAL`  | + `language_id`                    |
   | `style`                    | `VOICE_DESIGN`  | zero spk emb                       |
   | `instruction`              | `FREEFORM`      | zero spk emb                       |
+  | `instruction` + `voice`    | `FREEFORM`      | half of the voice's fingerprint    |
   | `controls.emotion`         | `EMOTION`       | clone voice required               |
   | `controls.speed/pitch/vol` | `BASIC`         | clone voice required               |
   | `controls.dialect`         | `DIALECT`       | clone voice required               |
@@ -173,6 +192,8 @@ image. Languages: all seven Ming languages are supported.
 | `REQUEST_TIMEOUT_S` | `90` | per request, queue + synth |
 | `MAX_TEXT_CHARS` | `1200` | 413 above |
 | `TEXT_NORMALIZATION` | `1` | pynini FST TN on/off |
+| `MING_COMPILE` | `1` | `torch.compile` on the DiT head: about 2× faster per stream |
+| `CORS_ORIGINS` | empty | comma-separated origins for browser calls, `*` for `tools/playground.html` |
 | `ALIGNER` | `off` | `mms_fa` enables forced word alignment (`words_source: "aligned"`); `fake` is the test stand-in |
 | `ALIGNER_TIMEOUT_S` | `5` | alignment deadline per request (queue + GPU); past it the estimate is returned |
 | `TORCH_HOME` | `/workspace/hf/torch` | torchaudio cache for the aligner weights (volume disk) |

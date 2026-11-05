@@ -1,21 +1,69 @@
+import io
 import json
 import re
 
+import numpy as np
 import pytest
 import soundfile as sf
 
 from app.errors import BadRequest, Conflict, MethodNotAllowed, NotFound
-from app.voices import EN_BUILTIN_VOICES, VoiceRegistry, detect_language
+from app.voices import EN_BUILTIN_VOICES, VoiceRegistry, detect_language, trim_trailing_silence
 from tests.helpers import ROOT, wav_bytes
 
 
 def test_seed_copies_presets_once(tmp_path):
     target = tmp_path / "voices"
     registry = VoiceRegistry(target, ROOT / "voices")
-    assert registry.seed() == 2
-    assert sorted(p.name for p in target.iterdir()) == [
-        "DB30.json", "DB30.wav", "lingguang.json", "lingguang.wav"]
+    assert registry.seed() == 27
+    names = {p.name for p in target.iterdir()}
+    assert {"DB30.wav", "lingguang.json", "en_james.wav", "fr_female_warm.json"} <= names
+    assert len(names) == 54
     assert registry.seed() == 0
+
+
+def test_every_preset_clone_has_a_transcript_and_no_silent_tail(registry):
+    for wav in sorted((ROOT / "voices").glob("*.wav")):
+        voice = registry.get(wav.stem)
+        assert voice.kind == "clone" and voice.prompt_text
+        samples, sample_rate = sf.read(str(wav), dtype="float32")
+        if wav.stem in {"DB30", "lingguang"}:
+            continue
+        assert len(trim_trailing_silence(samples, sample_rate)) >= len(samples) - sample_rate // 20
+
+
+def test_fingerprints_of_the_premium_voices(registry):
+    assert registry.fingerprint("US_James").endswith("fingerprints/US_James.pt")
+    assert registry.fingerprint("灵楷", direction=True).endswith("fingerprints_direction/灵楷.pt")
+    assert registry.fingerprint("US_Emma") is None
+    assert registry.fingerprint("US_Emma", direction=True) is not None
+    assert registry.fingerprint("悟空") is None
+
+
+def test_trailing_silence_is_cut_from_a_reference():
+    sample_rate = 16000
+    tone = 0.3 * np.sin(2 * np.pi * 200 * np.arange(sample_rate) / sample_rate)
+    samples = np.concatenate([tone, np.zeros(sample_rate)]).astype(np.float32)
+    trimmed = trim_trailing_silence(samples, sample_rate)
+    assert sample_rate <= len(trimmed) <= sample_rate + sample_rate // 10
+
+
+def test_create_clone_cuts_the_silent_tail(registry, voices_dir):
+    sample_rate = 16000
+    tone = 0.3 * np.sin(2 * np.pi * 200 * np.arange(2 * sample_rate) / sample_rate)
+    samples = np.concatenate([tone, np.zeros(sample_rate)]).astype(np.float32)
+    buffer = io.BytesIO(); sf.write(buffer, samples, sample_rate, format="WAV")
+    voice = registry.create_clone(buffer.getvalue(), "Hello there.", "en")
+    assert voice.prompt_seconds < 2.2
+    assert sf.info(str(voices_dir / f"{voice.id}.wav")).duration < 2.2
+
+
+def test_create_clone_needs_enough_speech(registry):
+    sample_rate = 16000
+    tone = 0.3 * np.sin(2 * np.pi * 200 * np.arange(sample_rate // 4) / sample_rate)
+    samples = np.concatenate([tone, np.zeros(2 * sample_rate)]).astype(np.float32)
+    buffer = io.BytesIO(); sf.write(buffer, samples, sample_rate, format="WAV")
+    with pytest.raises(BadRequest):
+        registry.create_clone(buffer.getvalue(), "Hello there.", "en")
 
 
 def test_seed_leaves_a_populated_dir_alone(tmp_path):

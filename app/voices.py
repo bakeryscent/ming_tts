@@ -34,6 +34,9 @@ MULTILINGUAL_LANGUAGES = frozenset({"de", "es", "fr", "ko", "ja"})
 
 CLONE_MIN_SECONDS = 1.0
 CLONE_MAX_SECONDS = 20.0
+TRIM_FRAME_SECONDS = 0.02
+TRIM_LEVEL = 0.03
+TRIM_KEEP_SECONDS = 0.05
 MAX_PROMPT_TEXT_CHARS = 1000
 ZH_CATALOG_FILE = "builtin_zh.json"
 
@@ -90,6 +93,25 @@ class Voice:
         return {key: value for key, value in fields.items() if value is not None}
 
 
+def trim_trailing_silence(mono: np.ndarray, sample_rate: int) -> np.ndarray:
+    """Cut the silence after the last sound of a reference clip.
+
+    Ming continues from the tail of the prompt, and a silent tail makes it start
+    the new audio abruptly and too loud: with 0.6 s of extra silence half of the
+    test clips did, with the tail cut none did.
+    """
+    frame = max(1, int(TRIM_FRAME_SECONDS * sample_rate))
+    if mono.shape[0] <= frame:
+        return mono
+    levels = np.array([np.sqrt(np.mean(mono[start:start + frame] ** 2))
+                       for start in range(0, mono.shape[0] - frame, frame)])
+    sound = np.flatnonzero(levels > levels.max() * TRIM_LEVEL)
+    if sound.size == 0:
+        return mono
+    end = (int(sound[-1]) + 1) * frame + int(TRIM_KEEP_SECONDS * sample_rate)
+    return mono[:min(mono.shape[0], end)]
+
+
 class VoiceRegistry:
     def __init__(self, voices_dir: Path, bundled_dir: Path) -> None:
         self.voices_dir = Path(voices_dir)
@@ -105,6 +127,12 @@ class VoiceRegistry:
             return {}
         with path.open(encoding="utf-8") as handle:
             return json.load(handle)
+
+    def fingerprint(self, voice_id: str, *, direction: bool = False) -> str | None:
+        """Path of a premium voice's speaker fingerprint (scripts/make_fingerprints.py), if it has one."""
+        folder = "fingerprints_direction" if direction else "fingerprints"
+        path = self.bundled_dir / folder / f"{voice_id}.pt"
+        return str(path) if path.is_file() else None
 
     def seed(self) -> int:
         """Copy the bundled preset clones into an empty ``voices_dir``.
@@ -212,7 +240,11 @@ class VoiceRegistry:
             raise BadRequest(
                 f"audio must be {CLONE_MIN_SECONDS:g}-{CLONE_MAX_SECONDS:g} s long, got {duration:.2f} s")
         mono = samples.mean(axis=1) if samples.shape[1] > 1 else samples[:, 0]
-        mono = np.clip(mono, -1.0, 1.0)
+        mono = trim_trailing_silence(np.clip(mono, -1.0, 1.0), sample_rate)
+        duration = mono.shape[0] / sample_rate
+        if duration < CLONE_MIN_SECONDS:
+            raise BadRequest(
+                f"audio must hold at least {CLONE_MIN_SECONDS:g} s of speech, got {duration:.2f} s")
 
         with self._lock:
             if voice_id is None:

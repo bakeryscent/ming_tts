@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ming Playground</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f5f5f3; --card: #ffffff; --text: #1d1d1b; --muted: #6d6d68; --line: #dcdcd6;
+    --accent: #4b45c6; --accent-text: #ffffff; --wave: #c4c4bd; --error: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161614; --card: #21211e; --text: #eeeeea; --muted: #a0a099; --line: #3a3a35;
+      --accent: #8f8aff; --accent-text: #15141f; --wave: #54544e; --error: #ff8a80;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 16px; }
+  h1 { font-size: 22px; margin: 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
+  .row { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+  label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; min-width: 0; }
+  input, select, textarea {
+    width: 100%; font: inherit; color: inherit; background: transparent;
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px;
+  }
+  select option { color: #1d1d1b; background: #ffffff; }
+  textarea { min-height: 130px; resize: vertical; }
+  .count { font-size: 12px; font-weight: 400; color: var(--muted); justify-self: end; }
+  .actions, .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button {
+    font: inherit; font-weight: 600; color: var(--text); background: transparent;
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  button:disabled { opacity: .5; cursor: default; }
+  #status { font-size: 13px; color: var(--muted); min-height: 20px; overflow-wrap: anywhere; }
+  #status.error { color: var(--error); }
+  canvas { display: block; width: 100%; height: 110px; cursor: pointer; touch-action: none; border-radius: 8px; }
+  canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .time { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); }
+  .hint { font-size: 12px; color: var(--muted); margin: 0; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chips button { font-size: 13px; font-weight: 500; padding: 6px 10px; }
+  .chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  .group { display: grid; gap: 8px; }
+  .group-title { font-size: 13px; font-weight: 600; }
+  .row3 { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 560px) { .row3 { grid-template-columns: 1fr; } }
+  details > summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+  details[open] > summary { margin-bottom: 10px; }
+  textarea.short { min-height: 70px; }
+  label.check { display: flex; gap: 8px; align-items: center; margin-top: 10px; font-weight: 500; }
+  label.check input { width: auto; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ming Playground</h1>
+
+  <section class="card">
+    <div class="row">
+      <label>URL del server
+        <input id="url" type="url" autocomplete="off" spellcheck="false" placeholder="https://...trycloudflare.com">
+      </label>
+      <label>Chiave API
+        <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="Incolla la chiave">
+      </label>
+    </div>
+    <p class="hint">URL e chiave restano solo in questo browser.</p>
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <label>Lingua <select id="language"></select></label>
+      <label>Voce <select id="voice"></select></label>
+    </div>
+
+    <label>Modo di lettura <select id="mode"></select></label>
+    <p id="modeHint" class="hint"></p>
+
+    <div id="directionPanel" class="group" hidden>
+      <span class="group-title">Scelte rapide</span>
+      <div id="directionChips" class="chips"></div>
+      <label>Istruzione personalizzata
+        <textarea id="direction" class="short" placeholder="Es.: Speak slowly, with a warm and reassuring tone."></textarea>
+      </label>
+    </div>
+
+    <div id="stylePanel" class="group" hidden>
+      <span class="group-title">Scelte rapide</span>
+      <div id="styleChips" class="chips"></div>
+      <label>Descrizione personalizzata della voce
+        <textarea id="style" class="short" placeholder="Es.: 成熟沉稳的男性旁白，吐字清晰，节奏舒缓。"></textarea>
+      </label>
+    </div>
+
+    <div id="emotionPanel" class="group" hidden>
+      <span class="group-title">Emozione</span>
+      <div id="emotionChips" class="chips"></div>
+    </div>
+
+    <div id="basicPanel" class="row3" hidden>
+      <label>Velocità <select id="speed"></select></label>
+      <label>Tono <select id="pitch"></select></label>
+      <label>Volume <select id="volume"></select></label>
+    </div>
+
+    <label>Testo
+      <textarea id="text" maxlength="1200"></textarea>
+      <span id="count" class="count"></span>
+    </label>
+
+    <div id="tagsPanel" class="group">
+      <span class="group-title">Suoni da inserire nel testo</span>
+      <div id="tagChips" class="chips"></div>
+    </div>
+
+    <details>
+      <summary>Impostazioni avanzate</summary>
+      <div class="row">
+        <label>Step
+          <select id="flowSteps"></select>
+        </label>
+        <label>Guida (CFG), 0-10
+          <input id="cfg" type="number" min="0" max="10" step="0.1" value="2">
+        </label>
+        <label>Temperatura, 0-2
+          <input id="temperature" type="number" min="0" max="2" step="0.1" value="0">
+        </label>
+        <label>Seed (vuoto = predefinito)
+          <input id="seed" type="number" step="1" placeholder="1895">
+        </label>
+      </div>
+      <label class="check"><input id="leveling" type="checkbox" checked> Livellamento di timbro e volume (L2)</label>
+    </details>
+    <div class="actions">
+      <button id="synth" class="primary" type="button">Synthesize</button>
+      <button id="export" type="button">Export</button>
+    </div>
+    <div id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <section id="player" class="card" hidden>
+    <canvas id="wave" tabindex="0" role="slider" aria-label="Posizione nell'audio" aria-valuemin="0" aria-valuenow="0"></canvas>
+    <div class="controls">
+      <button id="back" type="button" aria-label="Indietro di 5 secondi">-5 s</button>
+      <button id="play" type="button">Play</button>
+      <button id="forward" type="button" aria-label="Avanti di 5 secondi">+5 s</button>
+      <span id="time" class="time">0:00 / 0:00</span>
+    </div>
+    <audio id="audio" preload="auto"></audio>
+  </section>
+</main>
+
+<script>
+const VOICES = {
+  en: { name: "Inglese", sample: "The garden will remain open until sunset, provided the weather stays clear.", voices: [
+    ["US_James", "James, uomo, USA"], ["US_Emma", "Emma, donna, USA"], ["US_Stella", "Stella, donna, USA"],
+    ["UK_George", "George, uomo, UK"], ["UK_Charlotte", "Charlotte, donna, UK"] ] },
+  zh: { name: "Cinese", sample: "今晚的观测将在云层散开后开始，请耐心等待下一次通知。", voices: [
+    ["灵小柔", "灵小柔, donna, chiara e professionale"], ["灵楷", "灵楷, uomo, caldo e pacato"],
+    ["灵小雅", "灵小雅, donna, notiziari e audiolibri"], ["灵岩", "灵岩, uomo, notiziari"],
+    ["灵朵儿", "灵朵儿, donna, narrazione"] ] },
+  de: { name: "Tedesco", sample: "Die neue Bibliothek öffnet morgen früh ihre Türen für alle Besucher der Stadt." },
+  es: { name: "Spagnolo", sample: "La nueva biblioteca abrirá sus puertas mañana por la mañana para todos los visitantes de la ciudad." },
+  fr: { name: "Francese", sample: "La nouvelle bibliothèque ouvrira ses portes demain matin pour tous les visiteurs de la ville." },
+  ko: { name: "Coreano", sample: "새로운 도서관은 내일 아침 도시를 찾는 모든 방문객에게 문을 엽니다." },
+  ja: { name: "Giapponese", sample: "新しい図書館は、明日の朝、街を訪れるすべての人に扉を開きます。" },
+};
+const DESIGNED = [["male_narrator", "Uomo, narratore"], ["female_warm", "Donna, calda"], ["male_young", "Uomo, giovane"]];
+for (const code of ["de", "es", "fr", "ko", "ja"]) {
+  VOICES[code].voices = DESIGNED.map(([id, label]) => [`${code}_${id}`, label]);
+}
+
+// Emotion, speed/pitch/volume and inline sounds need a reference voice, so a
+// premium voice is swapped for its clone on those requests.
+const CLONE_OF = {
+  US_James: "en_james", US_Emma: "en_emma", US_Stella: "en_stella", UK_George: "en_george", UK_Charlotte: "en_charlotte",
+  "灵小柔": "zh_lingxiaorou", "灵楷": "zh_lingkai", "灵小雅": "zh_lingxiaoya", "灵岩": "zh_lingyan", "灵朵儿": "zh_lingduoer",
+};
+const FULL_LANGUAGES = ["en", "zh"];
+const MODES = {
+  normal: { name: "Normale", all: true, hint: "Lettura standard con la voce scelta." },
+  direction: { name: "Regia (istruzione libera)", all: true, hint: "Spieghi come leggere. In inglese e cinese resta la voce scelta; nelle altre lingue la voce la sceglie il modello." },
+  emotion: { name: "Emozione", all: false, hint: "Solo inglese e cinese. Usa la copia clonata della voce, che può suonare meno chiara." },
+  basic: { name: "Velocità, tono, volume", all: false, hint: "Solo inglese e cinese. Usa la copia clonata della voce, che può suonare meno chiara." },
+  style: { name: "Voce descritta", all: true, hint: "Descrivi la voce a parole. Non si sceglie una voce dall'elenco." },
+};
+const DIRECTIONS = [
+  ["Narratore caldo", "Speak in a warm, intimate storytelling voice, with a gentle pace and a hint of nostalgia."],
+  ["Fantasy misterioso", "Perform this as a mysterious fantasy narrator with a low pitch and dramatic pauses."],
+  ["Rabbia forte", "Very angry, tense and furious. Raise the voice, hit every word hard, and make the final question explode with anger."],
+  ["Sorpresa e sollievo", "Use a restrained British accent, beginning in surprise and settling into quiet relief."],
+  ["Annunciatore", "Speak like a professional announcer: clear, steady and neutral, at a moderate pace."],
+];
+const STYLES = [
+  ["Narratore documentario", "成熟沉稳的男性纪录片旁白，吐字清晰，节奏舒缓，语气理性而有厚度。"],
+  ["Annunci pubblici", "专业可靠的公共广播音色，音量适中，语速平稳，信息传达清楚而不生硬。"],
+  ["Guardiano solenne", "威严神秘的年长守门人，低沉有力，停顿明显，带有奇幻角色扮演感。"],
+  ["Donna calda", "温暖亲切的成年女性声音，吐字清晰，语速适中，语气自然柔和。"],
+  ["Ragazzo vivace", "年轻有活力的男性声音，吐字清晰，语速自然，语气明朗友好。"],
+];
+const EMOTIONS = [["Felice", "高兴"], ["Triste", "悲伤"], ["Arrabbiato", "愤怒"], ["Paura", "恐惧"], ["Disgusto", "厌恶"], ["Sorpresa", "惊讶"], ["Neutro", "中性"]];
+const SPEEDS = [["Lenta", "慢速"], ["Media", "中速"], ["Veloce", "快速"]];
+const LEVELS = [["Basso", "低"], ["Medio", "中"], ["Alto", "高"]];
+const TAGS = [
+  ["Sospiro", "[Sigh]"], ["Risata", "[Laughter]"], ["Respiro", "[Breathing]"], ["Tosse", "[Cough]"], ["Esitazione", "[Uhm]"],
+  ["Sorpresa ah", "[Surprise-ah]"], ["Sorpresa oh", "[Surprise-oh]"], ["Disappunto", "[Dissatisfaction-hnn]"], ["Conferma", "[Confirmation-en]"],
+  ["Domanda ei", "[Question-ei]"], ["Domanda ah", "[Question-ah]"], ["Domanda en", "[Question-en]"], ["Domanda oh", "[Question-oh]"], ["Domanda huh", "[Question-huh]"],
+];
+const TAG_RE = /\[(Sigh|Laughter|Breathing|Cough|Uhm|Surprise-ah|Surprise-oh|Dissatisfaction-hnn|Confirmation-en|Question-ei|Question-ah|Question-en|Question-oh|Question-huh)\]/;
+
+const $ = (id) => document.getElementById(id);
+const el = {
+  url: $("url"), key: $("key"), language: $("language"), voice: $("voice"), text: $("text"), count: $("count"),
+  synth: $("synth"), export: $("export"), status: $("status"), player: $("player"), wave: $("wave"),
+  back: $("back"), play: $("play"), forward: $("forward"), time: $("time"), audio: $("audio"),
+  mode: $("mode"), modeHint: $("modeHint"), direction: $("direction"), directionPanel: $("directionPanel"), directionChips: $("directionChips"),
+  style: $("style"), stylePanel: $("stylePanel"), styleChips: $("styleChips"), emotionPanel: $("emotionPanel"), emotionChips: $("emotionChips"),
+  basicPanel: $("basicPanel"), speed: $("speed"), pitch: $("pitch"), volume: $("volume"), tagsPanel: $("tagsPanel"), tagChips: $("tagChips"),
+  flowSteps: $("flowSteps"), cfg: $("cfg"), temperature: $("temperature"), seed: $("seed"), leveling: $("leveling"),
+};
+let emotion = "高兴";
+const DEFAULT_URL = "";
+
+const store = {
+  get(name) { try { return localStorage.getItem(`ming.${name}`); } catch { return null; } },
+  set(name, value) { try { localStorage.setItem(`ming.${name}`, value); } catch {} },
+};
+
+let current = null; // { signature, blob, url, voice }
+let peaks = [];
+let busy = false;
+
+function fillLanguages() {
+  el.language.innerHTML = "";
+  for (const [code, info] of Object.entries(VOICES)) el.language.add(new Option(info.name, code));
+}
+
+function fillVoices() {
+  el.voice.innerHTML = "";
+  for (const [id, label] of VOICES[el.language.value].voices) el.voice.add(new Option(label, id));
+}
+
+function setStatus(message, isError = false) {
+  el.status.textContent = message;
+  el.status.classList.toggle("error", isError);
+}
+
+function setBusy(value) {
+  busy = value;
+  el.synth.disabled = value;
+  el.export.disabled = value;
+}
+
+function numberInRange(input, label, min, max) {
+  const value = Number(input.value);
+  if (input.value === "" || !Number.isFinite(value) || value < min || value > max) {
+    throw new Error(`${label} deve essere tra ${min} e ${max}.`);
+  }
+  return value;
+}
+
+function requestBody() {
+  const language = el.language.value;
+  const mode = el.mode.value;
+  const text = el.text.value.trim();
+  const hasTags = TAG_RE.test(text);
+  if (hasTags && (mode !== "normal" || !FULL_LANGUAGES.includes(language))) {
+    throw new Error("I suoni funzionano solo in modo Normale, in inglese e cinese.");
+  }
+  const body = {
+    text, language, sample_rate: 44100, output_format: "wav", return_timestamps: false,
+    max_length: FULL_LANGUAGES.includes(language) ? 24 : 60,
+    flow_steps: Number(el.flowSteps.value),
+    cfg: numberInRange(el.cfg, "La guida", 0, 10),
+    temperature: numberInRange(el.temperature, "La temperatura", 0, 2),
+    leveling: el.leveling.checked,
+  };
+  if (el.seed.value !== "") {
+    if (!Number.isInteger(Number(el.seed.value))) throw new Error("Il seed deve essere un numero intero.");
+    body.seed = Number(el.seed.value);
+  }
+  const voice = el.voice.value;
+  const clone = CLONE_OF[voice] || voice;
+  if (mode === "normal") body.voice = hasTags ? clone : voice;
+  if (mode === "emotion") { body.voice = clone; body.controls = { emotion }; }
+  if (mode === "basic") { body.voice = clone; body.controls = { speed: el.speed.value, pitch: el.pitch.value, volume: el.volume.value }; }
+  if (mode === "direction") {
+    body.instruction = el.direction.value.trim();
+    if (!body.instruction) throw new Error("Scrivi un'istruzione o scegline una rapida.");
+    if (FULL_LANGUAGES.includes(language)) body.voice = voice;
+  }
+  if (mode === "style") {
+    body.style = el.style.value.trim();
+    if (!body.style) throw new Error("Descrivi la voce o scegli una descrizione rapida.");
+  }
+  return body;
+}
+
+function signature() {
+  return JSON.stringify([el.url.value.trim(), requestBody()]);
+}
+
+function fillModes() {
+  const allowed = Object.entries(MODES).filter(([, info]) => info.all || FULL_LANGUAGES.includes(el.language.value));
+  const previous = el.mode.value;
+  el.mode.innerHTML = "";
+  for (const [id, info] of allowed) el.mode.add(new Option(info.name, id));
+  if (allowed.some(([id]) => id === previous)) el.mode.value = previous;
+  updateMode();
+}
+
+function updateMode() {
+  const mode = el.mode.value;
+  el.modeHint.textContent = MODES[mode].hint;
+  el.directionPanel.hidden = mode !== "direction";
+  el.stylePanel.hidden = mode !== "style";
+  el.emotionPanel.hidden = mode !== "emotion";
+  el.basicPanel.hidden = mode !== "basic";
+  el.tagsPanel.hidden = mode !== "normal" || !FULL_LANGUAGES.includes(el.language.value);
+  el.voice.disabled = mode === "style" || (mode === "direction" && !FULL_LANGUAGES.includes(el.language.value));
+}
+
+function presetChips(container, presets, target) {
+  for (const [label, value] of presets) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => { target.value = value; });
+    container.append(button);
+  }
+}
+
+function emotionChips() {
+  for (const [label, value] of EMOTIONS) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.setAttribute("aria-pressed", String(value === emotion));
+    button.addEventListener("click", () => {
+      emotion = value;
+      for (const other of el.emotionChips.children) other.setAttribute("aria-pressed", String(other === button));
+    });
+    el.emotionChips.append(button);
+  }
+}
+
+function tagChips() {
+  for (const [label, tag] of TAGS) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.title = tag;
+    button.addEventListener("click", () => {
+      const { selectionStart: start, selectionEnd: end, value } = el.text;
+      el.text.value = `${value.slice(0, start)}${tag} ${value.slice(end)}`;
+      el.text.focus();
+      el.text.selectionStart = el.text.selectionEnd = start + tag.length + 1;
+      sampleInUse = false;
+      updateCount();
+    });
+    el.tagChips.append(button);
+  }
+}
+
+function fillSelect(select, options, selected) {
+  for (const [label, value] of options) select.add(new Option(label, value));
+  select.value = selected;
+}
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "0:00";
+  const total = Math.floor(seconds);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+}
+
+function base64ToBlob(data) {
+  const raw = atob(data);
+  const bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+  return new Blob([bytes], { type: "audio/wav" });
+}
+
+async function errorMessage(response) {
+  let detail = "";
+  try {
+    const body = await response.json();
+    detail = typeof body.detail === "string" ? body.detail : (body.error?.message || body.message || "");
+  } catch {}
+  const known = {
+    401: "Chiave API non valida.",
+    404: "Voce non trovata sul server.",
+    413: "Testo troppo lungo.",
+    429: "Server occupato: riprova tra qualche secondo.",
+    503: "Il server si sta ancora avviando.",
+    504: "Il server ha impiegato troppo tempo.",
+  };
+  return known[response.status] || detail || `Errore del server (${response.status}).`;
+}
+
+async function synthesize() {
+  const base = el.url.value.trim().replace(/\/+$/, "");
+  const key = el.key.value.trim();
+  if (!base) throw new Error("Inserisci l'URL del server.");
+  if (!key) throw new Error("Inserisci la chiave API.");
+  if (!el.text.value.trim()) throw new Error("Scrivi un testo.");
+
+  store.set("url", base);
+  store.set("key", key);
+  const sig = signature();
+  const request = requestBody();
+  const started = performance.now();
+  let response;
+  try {
+    response = await fetch(`${base}/v1/tts`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+    });
+  } catch {
+    throw new Error("Server non raggiungibile: controlla l'URL.");
+  }
+  if (!response.ok) throw new Error(await errorMessage(response));
+  const body = await response.json();
+  const blob = base64ToBlob(body.audio);
+  await loadAudio(blob, sig, request.voice || el.mode.value);
+  const wall = (performance.now() - started) / 1000;
+  setStatus(`${body.duration_seconds.toFixed(1)} s di audio in ${wall.toFixed(1)} s.`);
+}
+
+async function loadAudio(blob, sig, voice) {
+  if (current) URL.revokeObjectURL(current.url);
+  const url = URL.createObjectURL(blob);
+  current = { signature: sig, blob, url, voice };
+  el.audio.src = url;
+  el.player.hidden = false;
+  peaks = await computePeaks(blob);
+  draw();
+}
+
+async function computePeaks(blob) {
+  const context = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    const decoded = await context.decodeAudioData(await blob.arrayBuffer());
+    const channel = decoded.getChannelData(0);
+    const count = 1000;
+    const step = Math.max(1, Math.floor(channel.length / count));
+    const out = [];
+    let top = 0;
+    for (let i = 0; i < count && i * step < channel.length; i++) {
+      let peak = 0;
+      const end = Math.min(channel.length, (i + 1) * step);
+      for (let j = i * step; j < end; j++) peak = Math.max(peak, Math.abs(channel[j]));
+      out.push(peak);
+      top = Math.max(top, peak);
+    }
+    return out.map((value) => value / (top || 1));
+  } finally {
+    context.close();
+  }
+}
+
+function duration() {
+  return Number.isFinite(el.audio.duration) ? el.audio.duration : 0;
+}
+
+function draw() {
+  const canvas = el.wave;
+  const ratio = window.devicePixelRatio || 1;
+  const width = Math.max(1, Math.round(canvas.clientWidth * ratio));
+  const height = Math.max(1, Math.round(canvas.clientHeight * ratio));
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+  const styles = getComputedStyle(document.documentElement);
+  const accent = styles.getPropertyValue("--accent");
+  const wave = styles.getPropertyValue("--wave");
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, width, height);
+  const total = duration();
+  const progress = total ? el.audio.currentTime / total : 0;
+  const barWidth = Math.max(2, Math.round(2 * ratio));
+  const gap = Math.max(1, Math.round(ratio));
+  const bars = Math.floor(width / (barWidth + gap));
+  for (let i = 0; i < bars && peaks.length; i++) {
+    const from = Math.floor((i / bars) * peaks.length);
+    const to = Math.max(from + 1, Math.floor(((i + 1) / bars) * peaks.length));
+    let peak = 0;
+    for (let j = from; j < to; j++) peak = Math.max(peak, peaks[j] || 0);
+    const barHeight = Math.max(2 * ratio, peak * height * 0.92);
+    context.fillStyle = i / bars < progress ? accent : wave;
+    context.fillRect(i * (barWidth + gap), (height - barHeight) / 2, barWidth, barHeight);
+  }
+  context.fillStyle = accent;
+  context.fillRect(Math.min(width - ratio, progress * width), 0, Math.max(1, ratio), height);
+  el.time.textContent = `${formatTime(el.audio.currentTime)} / ${formatTime(total)}`;
+  canvas.setAttribute("aria-valuemax", String(Math.round(total)));
+  canvas.setAttribute("aria-valuenow", String(Math.round(el.audio.currentTime)));
+  canvas.setAttribute("aria-valuetext", el.time.textContent);
+}
+
+function animate() {
+  draw();
+  if (!el.audio.paused && !el.audio.ended) requestAnimationFrame(animate);
+}
+
+function seekTo(seconds) {
+  el.audio.currentTime = Math.max(0, Math.min(duration(), seconds));
+  draw();
+}
+
+function seekFromPointer(event) {
+  const box = el.wave.getBoundingClientRect();
+  seekTo(((event.clientX - box.left) / box.width) * duration());
+}
+
+function downloadCurrent() {
+  const link = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
+  link.href = current.url;
+  link.download = `ming_${current.voice}_${stamp}.wav`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+}
+
+async function run(action) {
+  if (busy) return;
+  setBusy(true);
+  setStatus("Generazione in corso...");
+  try {
+    await action();
+  } catch (error) {
+    setStatus(error.message || "Si è verificato un errore.", true);
+  } finally {
+    setBusy(false);
+  }
+}
+
+el.synth.addEventListener("click", () => run(async () => {
+  el.audio.pause();
+  await synthesize();
+  el.audio.currentTime = 0;
+  try {
+    await el.audio.play();
+  } catch {
+    setStatus(`${el.status.textContent} Premi Play per ascoltare.`);
+  }
+}));
+
+el.export.addEventListener("click", () => run(async () => {
+  if (!current || current.signature !== signature()) await synthesize();
+  else setStatus("File scaricato.");
+  downloadCurrent();
+}));
+
+el.play.addEventListener("click", () => (el.audio.paused ? el.audio.play() : el.audio.pause()));
+el.back.addEventListener("click", () => seekTo(el.audio.currentTime - 5));
+el.forward.addEventListener("click", () => seekTo(el.audio.currentTime + 5));
+el.audio.addEventListener("play", () => { el.play.textContent = "Pausa"; animate(); });
+el.audio.addEventListener("pause", () => { el.play.textContent = "Play"; draw(); });
+el.audio.addEventListener("ended", () => { el.play.textContent = "Play"; draw(); });
+for (const name of ["loadedmetadata", "durationchange", "seeked", "timeupdate"]) el.audio.addEventListener(name, draw);
+
+el.wave.addEventListener("pointerdown", (event) => {
+  el.wave.setPointerCapture(event.pointerId);
+  seekFromPointer(event);
+});
+el.wave.addEventListener("pointermove", (event) => {
+  if (el.wave.hasPointerCapture(event.pointerId)) seekFromPointer(event);
+});
+el.wave.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft") { event.preventDefault(); seekTo(el.audio.currentTime - 1); }
+  if (event.key === "ArrowRight") { event.preventDefault(); seekTo(el.audio.currentTime + 1); }
+  if (event.key === " ") { event.preventDefault(); el.play.click(); }
+});
+new ResizeObserver(draw).observe(el.wave);
+
+let sampleInUse = true;
+function applySample() {
+  if (sampleInUse) el.text.value = VOICES[el.language.value].sample;
+  updateCount();
+}
+function updateCount() {
+  el.count.textContent = `${el.text.value.length} / 1200`;
+}
+
+el.language.addEventListener("change", () => { fillVoices(); fillModes(); applySample(); });
+el.mode.addEventListener("change", updateMode);
+el.text.addEventListener("input", () => { sampleInUse = !el.text.value.trim(); updateCount(); });
+
+fillLanguages();
+fillVoices();
+presetChips(el.directionChips, DIRECTIONS, el.direction);
+presetChips(el.styleChips, STYLES, el.style);
+emotionChips();
+tagChips();
+fillSelect(el.speed, SPEEDS, "中速");
+fillSelect(el.pitch, LEVELS, "中");
+fillSelect(el.volume, LEVELS, "中");
+fillSelect(el.flowSteps, [["5", "5"], ["6", "6"], ["7", "7"], ["10", "10"], ["12", "12"], ["16 (predefinito)", "16"]], "16");
+fillModes();
+applySample();
+el.url.value = store.get("url") || DEFAULT_URL;
+el.key.value = store.get("key") || "";
+</script>
+</body>
+</html>

@@ -27,6 +27,9 @@ MING_DIR=/path/to/Ming-3.0-tts .venv/bin/python -m pytest -q     # senza MING_DI
 API_TOKEN=dev FAKE_ENGINE=1 NUM_WORKERS=2 .venv/bin/uvicorn app.main:app --port 8080
 ```
 
+## Provare a mano
+`tools/playground.html` è una pagina da aprire nel browser: voci per lingua, modi di lettura, player con waveform ed export. Il server deve avere `CORS_ORIGINS=*`.
+
 ## Deploy
 1. Push su GitHub → la workflow pubblica `ghcr.io/<owner>/ming_tts:latest`.
 2. RunPod: template con quell'immagine, A5000, container 25 GB, volume 15 GB su `/workspace`, porta HTTP 8080, env `API_TOKEN` (+ `NUM_WORKERS=3`). Dettagli in `docs/RUNPOD.md`.

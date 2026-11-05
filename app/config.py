@@ -53,6 +53,12 @@ class Settings:
     max_text_chars: int = 1200
     text_normalization: bool = True
     device: str = "cuda:0"
+    # torch.compile on the DiT head, the slowest part of each decode step: about
+    # twice as fast for one stream (measured on an RTX 4090). MING_COMPILE=0 turns it off.
+    compile_dit: bool = True
+    # CORS_ORIGINS: comma-separated origins allowed to call the API from a browser
+    # ("*" for tools/playground.html opened as a local file). Empty: no CORS headers.
+    cors_origins: tuple[str, ...] = ()
     # FAKE_ENGINE=1: workers return a synthetic tone instead of loading Ming.
     # Used by the test-suite to exercise the pool on machines without a GPU.
     fake_engine: bool = False
@@ -97,6 +103,9 @@ class Settings:
             max_text_chars=_env_int("MAX_TEXT_CHARS", 1200, minimum=1),
             text_normalization=_env_bool("TEXT_NORMALIZATION", True),
             fake_engine=_env_bool("FAKE_ENGINE", False),
+            compile_dit=_env_bool("MING_COMPILE", True),
+            cors_origins=tuple(
+                origin.strip() for origin in os.environ.get("CORS_ORIGINS", "").split(",") if origin.strip()),
             aligner=aligner,
             aligner_timeout_s=_env_float("ALIGNER_TIMEOUT_S", 5.0),
         )
