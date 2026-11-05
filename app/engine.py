@@ -332,9 +332,11 @@ class MingBackend:
             raise RuntimeError(f"unexpected model sample rate {self.model.sample_rate}")
         self.load_s = round(time.perf_counter() - started, 2)
         _keep_lowercase_a_out_of_units()
-        if settings.compile_dit:
-            head = self.model.model.flowloss.cfm.model
-            head.forward = torch.compile(head.forward)
+        self._head = self.model.model.flowloss.cfm.model
+        self._head_forward = self._head.forward
+        self._compiled = settings.compile_dit
+        if self._compiled:
+            self._head.forward = torch.compile(self._head_forward)
         self._flow_steps = FLOW_STEPS
         flow = self.model.model.flowloss
         flow_sample = flow.sample
@@ -347,9 +349,19 @@ class MingBackend:
     def warmup(self) -> int:
         """One short synthesis (also loads the text normalizer); returns ms."""
         started = time.perf_counter()
-        self.synthesize(SynthesisPlan(
-            task="IP", text=WARMUP_TEXT, language="en", voice="US_James",
-            controls={"ip": "US_James"}, use_zero_spk_emb=True))
+        plan = SynthesisPlan(task="IP", text=WARMUP_TEXT, language="en", voice="US_James",
+                             controls={"ip": "US_James"}, use_zero_spk_emb=True)
+        try:
+            self.synthesize(plan)
+        except Exception as error:
+            if not self._compiled:
+                raise
+            # Compilation happens on first use and needs a C compiler; without
+            # one every worker would fail to load. Slower without it, but serving.
+            log.warning("compile_failed_running_without", extra={"error": repr(error)[:500]})
+            self._head.forward = self._head_forward
+            self._compiled = False
+            self.synthesize(plan)
         return int((time.perf_counter() - started) * 1000)
 
     def info(self) -> dict[str, Any]:
@@ -361,6 +373,7 @@ class MingBackend:
             "vram_used_mb": (total - free) // 2**20,
             "prompt_cache_size": len(self.model._prompt_cache),
             "load_s": self.load_s,
+            "compiled": self._compiled,
         }
 
     def _refresh_prompt(self, path: str) -> None:

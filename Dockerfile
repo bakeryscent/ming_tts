@@ -17,10 +17,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+# build-essential: torch.compile (MING_COMPILE) builds kernels with a C compiler on first use.
 RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
       curl \
       libsndfile1 \
+      build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Ming is not a pip package: vendor the repo at a pinned commit.
